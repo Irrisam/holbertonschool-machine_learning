@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+"""function that transposes a matrix"""
 # import numpy
 
 
