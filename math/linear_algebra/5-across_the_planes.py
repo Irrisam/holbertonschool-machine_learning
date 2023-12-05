@@ -3,9 +3,13 @@
 
 
 def add_matrices2D(mat1, mat2):
+    """function that adds two matrices element wise"""
     if len(mat1) != len(mat2):
         """checks for shape"""
         return None
+    for row in mat2:
+        if len(row) != len(mat1[0]):
+            return None
     transformed_matrix = [[] for _ in range(len(mat1))]
     """builds the receiving matrice with the size of the original matrices"""
     for counter, (i, j) in enumerate(zip(mat1, mat2)):
