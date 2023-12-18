@@ -22,11 +22,13 @@ class Poisson:
 
     def pmf(self, k):
         """instance method that calculates poisson's pmf"""
-        if k is not type(int):
-            k = int(k)
+        k = int(k)
+        if k < 0:
+            return 0
         e = 2.7182818285
 
         factorialk = 1
+
         for i in range(1, k+1):
             factorialk *= i
 
