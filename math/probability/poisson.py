@@ -10,15 +10,12 @@ class Poisson:
 
         if data is None:
             self.data = lambtha
-        try:
-            lambtha <= 0
-        except (ValueError):
-            print("lambtha must be a positive value")
-        if not isinstance(data, list):
-            raise TypeError("data must be a list")
-        try:
-            len(data) > 1
-        except (TypeError):
-            print("data must contain multiple values")
+            if lambtha <= 0:
+                raise ValueError("lambtha must be a positive value")
+        else:
+            if not isinstance(data, list):
+                raise TypeError("data must be a list")
+            if len(data) <= 2:
+                raise TypeError("data must contain multiple values")
 
-        self.lambtha = sum(data) / len(data)
+            self.lambtha = sum(data) / len(data)
