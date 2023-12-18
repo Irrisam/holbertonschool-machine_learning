@@ -19,3 +19,15 @@ class Poisson:
                 raise ValueError("data must contain multiple values")
 
             self.lambtha = sum(data) / len(data)
+
+    def pmf(self, k):
+        """instance method that calculates poisson's pmf"""
+        if k is not type(int):
+            k = int(k)
+        e = 2.7182818285
+
+        factorialk = 1
+        for i in range(1, k+1):
+            factorialk *= i
+
+        return (self.lambtha ** k) * (e ** (-self.lambtha)) / factorialk
