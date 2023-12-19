@@ -25,9 +25,8 @@ class Exponential:
                 self.lambtha = 1 / (sum(data) / len(data))
 
     def pdf(self, x):
-        if x <= 0:
+        """calculates exponential distribution's PDF for period x"""
+        if x < 0:
             return 0
         e = 2.7182818285
-        pdf_value = self.lambtha * (e ** -(self.lambtha * x))
-
-        return pdf_value
+        return self.lambtha * (e ** -(self.lambtha * x))
