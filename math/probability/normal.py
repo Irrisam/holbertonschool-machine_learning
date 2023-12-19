@@ -4,7 +4,7 @@
 
 class Normal:
     def __init__(self, data=None, mean=0., stddev=1.):
-        """Initialize Normal distribution"""
+        """Initialize Normal distribution class with preset settings"""
         self.data = data
         if data is None:
             if stddev <= 0:
