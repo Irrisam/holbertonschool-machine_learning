@@ -37,4 +37,3 @@ class Exponential:
         if x < 0:
             return 0
         return 1 - (e ** -(self.lambtha * x))
-        
