@@ -3,6 +3,7 @@
 
 
 class Normal:
+    """Normal class's init"""
     def __init__(self, data=None, mean=0., stddev=1.):
         """Initialize Normal distribution class with preset settings"""
         self.data = data
@@ -37,3 +38,8 @@ class Normal:
         µ = self.mean
         sdev = self.stddev
         return e**(-0.5 * ((x - µ) / sdev)**2) / (sdev * (2 * π)**0.5)
+
+    def cdf(self, x):
+        """Calculates the Normal CDF for a given x-value"""
+        µ = self.mean
+        sdev = self.stddev
