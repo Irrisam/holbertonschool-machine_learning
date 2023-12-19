@@ -22,7 +22,6 @@ class Normal:
                 self.mean = sum(data) / len(data)
                 var = sum([(ele - self.mean)**2 for ele in data]) / len(data)
                 self.stddev = var**0.5
-
     def z_score(self, x):
         """Calculates the z_score for a given x-value"""
         return (x - self.mean) / self.stddev
@@ -30,3 +29,11 @@ class Normal:
     def x_value(self, z):
         """Calculates the x_score for a given z-score"""
         return self.stddev * z + self.mean
+
+    def pdf(self, x):
+        """Calculates the Normal PDF for a given x-value """
+        e = 2.7182818285
+        π = 3.1415926536
+        µ = self.mean
+        sdev = self.stddev
+        return e**(-0.5 * ((x - µ) / sdev)**2) / (sdev * (2 * π)**0.5)
