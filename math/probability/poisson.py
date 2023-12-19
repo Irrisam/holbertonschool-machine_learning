@@ -21,7 +21,9 @@ class Poisson:
             self.lambtha = sum(data) / len(data)
 
     def pmf(self, k):
-        """instance method that calculates poisson's pmf"""
+        """instance method that calculates poisson's pmf
+        calculate odds of a discrete variable taking a particular value
+        """
         k = int(k)
         if k < 0:
             return 0
@@ -33,3 +35,16 @@ class Poisson:
             factorialk *= i
 
         return (self.lambtha ** k) * (e ** (-self.lambtha)) / factorialk
+
+    def cdf(self, k):
+        """function that calculates cdf (sum of pmf from i to k included)
+            calculates odds of a variable <= k
+        """
+        k = int(k)
+        if k < 0:
+            return 0
+        else:
+            prob_sum = 0
+            for i in range(k + 1):
+                prob_sum += self.pmf(i)
+            return prob_sum
