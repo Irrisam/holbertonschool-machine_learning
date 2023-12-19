@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """ Binonial class """
 
 
@@ -72,4 +73,3 @@ class Binomial:
         for i in range(1, n + 1):
             nfacto *= i
         return nfacto
-
