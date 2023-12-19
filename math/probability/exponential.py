@@ -28,6 +28,6 @@ class Exponential:
         if x <= 0:
             return 0
         e = 2.7182818285
-        pdf_value = self.lambtha * -(e ** -(self.lambtha * x))
+        pdf_value = self.lambtha * (e ** -(self.lambtha * x))
 
         return pdf_value
