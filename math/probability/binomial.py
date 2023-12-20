@@ -2,6 +2,13 @@
 """ Binonial class """
 
 
+def facto(n):
+    """ Factorial function """
+    nfacto = 1
+    for i in range(1, n + 1):
+        nfacto *= i
+    return nfacto
+
 class Binomial:
     """ Class that represents the Binomial distribution """
     def __init__(self, data=None, n=1, p=0.5):
@@ -66,10 +73,3 @@ class Binomial:
         for i in range(k + 1):
             cdf += self.pmf(i)
         return cdf
-    
-    def facto(n):
-        """ Factorial function """
-        nfacto = 1
-        for i in range(1, n + 1):
-            nfacto *= i
-        return nfacto
