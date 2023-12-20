@@ -9,6 +9,7 @@ def facto(n):
         nfacto *= i
     return nfacto
 
+
 class Binomial:
     """ Class that represents the Binomial distribution """
     def __init__(self, data=None, n=1, p=0.5):
