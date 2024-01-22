@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """neuron file from classification project"""
-import random
+import numpy as np
 
 
 class Neuron:
@@ -13,6 +13,6 @@ class Neuron:
             raise ValueError("nx must be a positive integer")
         else:
             self.nx = nx
-        W = random.normal(loc=0.0, scale=1.0, size=None)
+        W = np.random.normal(loc=0.0, scale=1.0, size=None)
         b = 0
         A = 0
