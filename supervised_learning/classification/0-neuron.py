@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+"""neuron file from classification project"""
+import random
+
+
+class Neuron:
+    """Class building for neurons"""
+    def __init__(self, nx):
+        
+        if nx is not isinstance(int, nx):
+            raise TypeError("nx must be an integer")
+        elif nx < 1:
+            raise ValueError("nx must be a positive integer")
+        else:
+            self.nx = nx
+        W = random.normal(loc=0.0, scale=1.0, size=None)
+        b = 0
+        A = 0
