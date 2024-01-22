@@ -30,6 +30,7 @@ class Neuron:
         return self.__A
 
     def forward_prop(self, X):
+        """defines a single neuron performing binary classification """
         z = np.dot(self.W, X) + self.b
         self.__A = 1 / (1 + np.exp(-z))
         return self.A
