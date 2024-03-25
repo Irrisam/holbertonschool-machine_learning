@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """ Neuron class """
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 class Neuron:
@@ -98,11 +99,11 @@ class Neuron:
 
         Args:
             X (np.ndarray): Matrix of shape (nx, m) that contains the input
-            data.
+                data.
             Y (np.ndarray): Matrix of shape (1, m) that contains the correct
-            labels for the input data.
+                labels for the input data.
             A (np.ndarray): Matrix of shape (1, m) containing the activated
-            output of the neuron for each exemple
+                output of the neuron for each exemple.
             alpha (float, optional): The learning rate. Defaults to 0.05.
         """
         m = X.shape[1]
@@ -110,3 +111,63 @@ class Neuron:
         grad_b = 1/m * np.sum(A - Y)
         self.__W -= alpha * grad_W
         self.__b -= alpha * grad_b
+
+    def train(self, X, Y, iterations=5000, alpha=0.05,
+              verbose=True, graph=True, step=100):
+        """
+        Trains the neuron and updates its privates attributes.
+
+        Args:
+            X (np.ndarray): Matrix of shape (nx, m) that contains the input
+                data.
+            Y (np.ndarray): Matrix of shape (1, m) that contains the correct
+                labels for the input data.
+            iterations (int, optional): The number of iterations to train over.
+                Defaults to 5000.
+            alpha (float, optional): The learning rate. Defaults to 0.05.
+                verbose (bool): Defines whether or not to print information
+                about the training.
+            graph (bool): Defines whether or not to graph information about the
+                training once it has completed.
+
+        Raises:
+            TypeError: If iterations is not an integer or alpha is not a float.
+            ValueError: If iterations or alpha is not positive.
+
+        Returns:
+            The evaluation of the training data after iterations of training
+            have occurred.
+        """
+        if not isinstance(iterations, int):
+            raise TypeError('iterations must be an integer')
+        elif iterations <= 0:
+            raise ValueError('iterations must be a positive integer')
+
+        if not isinstance(alpha, float):
+            raise TypeError('alpha must be a float')
+        elif alpha <= 0:
+            raise ValueError('alpha must be positive')
+
+        if verbose or graph:
+            if not isinstance(step, int):
+                raise TypeError('step must be an integer')
+            elif step <= 0 or step > iterations:
+                raise ValueError('step must be positive and <= iterations')
+
+            costs = []
+            for i in range(iterations + 1):
+                A = self.forward_prop(X)
+                self.gradient_descent(X, Y, A, alpha)
+                if i % step == 0 or i == 0 or i == iterations:
+                    cost = self.cost(Y, A)
+                    print(f"Cost after {i} iterations: {cost}")
+                    costs.append(cost)
+
+            if graph:
+                plt.plot(np.arange(0, iterations + 1, step=step), costs, 'b-')
+                plt.xlabel('iteration')
+                plt.ylabel('cost')
+                plt.title('Training Cost')
+                plt.show()
+
+        return self.evaluate(X, Y)

@@ -1,19 +1,29 @@
 #!/usr/bin/env python3
-"""neuron file from classification project"""
+""" Neuron class """
 import numpy as np
 
 
 class Neuron:
-    """Class building for neurons"""
-    def __init__(self, nx):
+    """ Defines a single neuron performing binary classification """
 
+    def __init__(self, nx):
+        """
+        Constructor method for Neuron instances.
+
+        Args:
+            nx (int): The number of input features to the neuron. Must be
+            positive.
+
+        Raises:
+            TypeError: If nx is not an integer.
+            ValueError: If nx less than 1.
+        """
         if not isinstance(nx, int):
-            raise TypeError("nx must be an integer")
+            raise TypeError('nx must be an integer')
         elif nx < 1:
-            raise ValueError("nx must be a positive integer")
+            raise ValueError('nx must be positive')
         else:
-            self.nx = nx
-            self.__W = np.random.normal(loc=0.0, scale=1.0, size=(1, nx))
+            self.__W = np.random.normal(loc=0, scale=1, size=(1, nx))
             self.__b = 0
             self.__A = 0
 
@@ -30,7 +40,15 @@ class Neuron:
         return self.__A
 
     def forward_prop(self, X):
-        """defines a single neuron performing binary classification """
-        z = np.dot(self.W, X) + self.b
-        self.__A = 1 / (1 + np.exp(-z))
-        return self.A
+        """
+        Calculates the forward propagation of the neuron.
+
+        Args:
+            X(np.ndarray): Matrix of size (nx, m) that contains the input data.
+
+        Returns:
+            The activated output of the neuron using sigmoid activation.
+        """
+        Z = np.matmul(self.__W, X) + self.__b
+        self.__A = 1 / (1 + np.exp(-Z))
+        return self.__A
