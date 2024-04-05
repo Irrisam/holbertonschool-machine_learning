@@ -1,1 +1,1 @@
-Probability project from holberton school
+# Probability

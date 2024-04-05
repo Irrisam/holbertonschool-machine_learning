@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
-"""Function that calculates the shape of a matrix"""
+""" matrix_shape function """
 
 
 def matrix_shape(matrix):
-    """Function that calculates the shape of a matrice"""
-    shape = []
-    while isinstance(matrix, list):
-        shape.append(len(matrix))
-        matrix = matrix[0]
-    return(shape)
+    """
+    Returns the shape of a matrix as a list
+
+    Args:
+        matrix (n-dimensional array): The matrix to find the shape of
+
+    Returns:
+        list: The dimensions of the array as a list
+    """
+    if not matrix or not isinstance(matrix, list):
+        return []
+
+    sub_len = matrix_shape(matrix[0])
+    shape = [len(matrix)] + sub_len
+    return shape

@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
-"""function that add two arrays element wise"""
+""" add_arrays function """
 
 
 def add_arrays(arr1, arr2):
-    """checks for different sizes"""
+    """
+    Adds up the elements of two arrays
+
+    Args:
+        arr1 (array of ints/floats): Array to add
+        arr2 (array of ints/floats): Array to add
+
+    Returns:
+        list: The new list of summed elements
+    """
     if len(arr1) != len(arr2):
         return None
 
-    transformed_matrix = []
-    for i, j in zip(arr1, arr2):
-        """zip builds tupples with each element and give them to i and j"""
-        result = i + j
-        transformed_matrix.append(result)
-
-    return transformed_matrix
+    sum = []
+    for i in range(len(arr1)):
+        sum.append(arr1[i] + arr2[i])
+    return sum

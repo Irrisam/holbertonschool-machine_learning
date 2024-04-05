@@ -1,22 +1,21 @@
 #!/usr/bin/env python3
-"""function that adds two matrices element wise"""
+""" add_matrices function """
 
 
 def add_matrices2D(mat1, mat2):
-    """function that adds two matrices element wise"""
-    if len(mat1) != len(mat2):
-        """checks for shape"""
-        return None
-    for row in mat2:
-        if len(row) != len(mat1[0]):
-            return None
-    transformed_matrix = [[] for _ in range(len(mat1))]
-    """builds the receiving matrice with the size of the original matrices"""
-    for counter, (i, j) in enumerate(zip(mat1, mat2)):
-        """adds a counter in order to insert new values in new matrice"""
-        for x, y in zip(i, j):
-            """digs within each new tuple to get new values"""
-            result = x + y
-            transformed_matrix[counter].append(result)
+    """_summary_
 
-    return transformed_matrix
+    Args:
+        mat1 (matrix): Matrix to add
+        mat2 (matrix): Matrix to add
+
+    Returns:
+        matrix: The matrix corresponding to the addition of mat1 and mat2
+    """
+    l1 = len(mat1)
+    l_1 = len(mat1[0])
+    if l1 != len(mat2) or l_1 != len(mat2[0]):
+        return None
+
+    sum = [[mat1[i][j] + mat2[i][j] for j in range(l_1)] for i in range(l1)]
+    return sum

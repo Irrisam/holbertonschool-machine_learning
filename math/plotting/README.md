@@ -1,1 +1,1 @@
-Folder about the plotting projet
+# Plotting in Python with matplotlib
