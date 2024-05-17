@@ -1,20 +1,21 @@
 #!/usr/bin/env python3
-""" Multiple Kernels """
+"""
+    Multiple Kernels
+"""
+
 import numpy as np
 
 
 def convolve(images, kernel, padding='same', stride=(1, 1)):
     """
-    Performs a convolution on images using multiple kernel.
+        Function that performs a convolution on images using multiple kernel
 
-    Args:
-        images (ndarray): Matrxi of shape (m, h, w, c), multiple images.
-        kernel (ndarray): Matrxi of shape (kh,kw,c,nc), kernel for convolution.
-        padding (tuple): (ph,pw) or "same" or "valid".
-        stride (tuple): (sh, sw).
+        :param images: ndarray, shape(m, h, w, c), multiple images
+        :param kernel: ndarray, shape(kh,kw,c,nc), kernel for convolution
+        :param padding: tuple (ph,pw) or 'same" or "valid'
+        :param stride: tuple (sh, sw)
 
-    Returns:
-        ndarray: The matrix containing the convolved images.
+        :return: ndarray containing convolved images
     """
     # size images, kernel, padding, stride
     m, h, w, c = images.shape

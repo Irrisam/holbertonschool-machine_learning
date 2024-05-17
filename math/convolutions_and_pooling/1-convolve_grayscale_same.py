@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
-""" Same Convolution """
+"""
+    Same Convolution
+"""
+
 import numpy as np
 
 
 def convolve_grayscale_same(images, kernel):
     """
-    Performs a same convolution on grayscale images.
+        Function that performs a same convolution on grayscale images
 
-    Args:
-        images (ndarray): Matrix of shape (m, h, w), multiple grayscale images
-        kernel (ndarray): Matrix of shape (kh,kw), kernel for convolution
+        :param images: ndarray, shape(m, h, w), multiple grayscale images
+        :param kernel: ndarray, shape(kh,kw), kernel for convolution
 
-    Returns:
-        ndarray: The matrix containing the convolved images.
+        :return: ndarray containing convolved images
     """
     # size images and kernel
     m, h, w = images.shape

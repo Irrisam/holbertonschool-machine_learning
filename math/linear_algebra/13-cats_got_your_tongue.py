@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
-""" np_cat function """
+""" function  that concatenates two matrices along
+    a specific axis
+"""
 
 import numpy as np
 
 
 def np_cat(mat1, mat2, axis=0):
-    """
-    Concatenates two numpy.ndarrays
+    """ function : concatenate two matrix along specific axis
 
-    Args:
-        mat1 (np.ndarray): The matrix to concatenate into
-        mat2 (np.ndarray): The matrix to concatenate from
-        axis (int, optional): The axis to concatenate along. Defaults to 0.
+    Arguments:
+        mat1 : first matrix
+        mat2 : second matrix
+        axis: specific axis for concatenation (0 vertical, 1 horizontal)
 
     Returns:
-        np.ndarray: The concatenation of mat1 and mat2 along axis
+       new numpy array
     """
-    return np.concatenate((mat1, mat2), axis)
+    return np.concatenate((mat1, mat2), axis=axis)

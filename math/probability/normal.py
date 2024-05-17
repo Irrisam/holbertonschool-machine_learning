@@ -1,100 +1,97 @@
 #!/usr/bin/env python3
-""" Normal class """
-π = 3.1415926536
-e = 2.7182818285
+"""
+    Class to represent a normal distribution
+"""
 
 
 class Normal:
-    """ Class that represents a normal distribution """
+    """
+        Class to represent a normal distribution
+    """
+
     def __init__(self, data=None, mean=0., stddev=1.):
         """
-        Constructor method for the Normal class.
+            Class constructor
 
-        Args:
-            data (list, optional): List of the data to be used to estimate
-                the distribution. Defaults to None.
-            mean (float, optional): The mean of the distribution.
-                Defaults to 0..
-            stddev (float, optional): The standard deviation of the
-                distribution. Defaults to 1..
-
-        Raises:
-            ValueError: If stddev if less or equal to zero, or if data doesn't
-                contain at least two values.
-            TypeError: If data is not a list
+            :param data : List of the data to estimate the distribution
+            :param mean : Mean of the distribution
+            :param stddev : Standard deviation of the distribution
         """
-        if data is None:
-            if stddev <= 0:
-                raise ValueError('stddev must be a positive value')
-            else:
-                self.mean = float(mean)
-                self.stddev = float(stddev)
 
+        if data is None:
+            # Use the given mean and stddev
+            self.mean = float(mean)
+            self.stddev = float(stddev)
+            # check stddev is positive
+            if self.stddev <= 0:
+                raise ValueError("stddev must be a positive value")
         else:
+            # calculate mean and stddev from data
             if not isinstance(data, list):
-                raise TypeError('data must be a list')
-            elif len(data) < 2:
-                raise ValueError('data must contain multiple values')
-            else:
-                self.mean = sum(data) / len(data)
-                var = sum([(ele - self.mean)**2 for ele in data]) / len(data)
-                self.stddev = var**0.5
+                raise TypeError("data must be a list")
+
+            if len(data) < 2:
+                raise ValueError("data must contain multiple values")
+
+            # mean is the sum of the data divided by the number of data points
+            self.mean = sum(data) / len(data)
+
+            # stddev is the square root of the variance
+            variance = 0
+            for i in range(len(data)):
+                variance += (data[i] - self.mean) ** 2
+            self.stddev = (variance / len(data)) ** (1 / 2)
+
+        # Euler's number
+        self.e = 2.7182818285
+        # Pi's number
+        self.pi = 3.1415926536
 
     def z_score(self, x):
         """
-        Calculates the z_score for a given x-value.
+            Calculates the z-score of a given x-value
 
-        Args:
-            x (int/float): The x-value
-
-        Returns:
-            float: The z-score for x
+            :param x: given value
+            :return: z-score to normalize
         """
-        return (x - self.mean) / self.stddev
+        z_score = (x - self.mean) / self.stddev
+        return z_score
 
     def x_value(self, z):
         """
-        Calculates the x_score for a given z-score.
+            Calculate the x_value of a given z_score
 
-        Args:
-            z (int/float): The z-score
-
-        Returns:
-            float: The x-value for z
+        :param z: z_score
+        :return: x_value
         """
-        return self.stddev * z + self.mean
+        x_value = self.mean + z * self.stddev
+        return x_value
 
     def pdf(self, x):
         """
-        Calculates the Normal PDF for a given x-value
-
-        Args:
-            x (int/float): The x-value
-
-        Returns:
-            float: The Normal PDF value for x
+            Method to calculate PDF for a given x_value
+        :param x: given value
+        :return: PDF
         """
-        µ = self.mean
-        sdev = self.stddev
-        return e**(-0.5 * ((x - µ) / sdev)**2) / (sdev * (2 * π)**0.5)
+
+        pdf = 1 / (self.stddev * (2 * self.pi) ** (1 / 2)) * \
+            self.e ** (- (x - self.mean) ** 2 / (2 * self.stddev ** 2))
+        return pdf
 
     def cdf(self, x):
         """
-        Calculates the Normal CDF for a given x-value
+            Method to calculate CDF for a given x_value
 
-        Args:
-            x (int/float): The x-value
-
-        Returns:
-            float: The Normal CDF for x
+        :param x: given value
+        :return: CDF
         """
-        µ = self.mean
-        sdev = self.stddev
 
-        def erf(x):
-            """ Computes the error function on x """
-            series = x - ((x**3) / 3) + ((x**5) / 10)\
-                - ((x**7) / 42) + ((x**9) / 216)
-            return (2 / π**0.5) * series
+        value = (x - self.mean) / (self.stddev * (2 ** 0.5))
+        # calculate erf : function error with specific value
+        erf_s = value - (value ** 3) / 3 + (value ** 5) / 10 \
+            - (value ** 7) / 42 + (value ** 9) / 216
+        erf = (2 / self.pi ** 0.5) * erf_s
 
-        return (1 + erf((x - µ) / (sdev * 2**0.5))) / 2
+        # calculate cdf
+        cdf = 0.5 * (1 + erf)
+        return cdf

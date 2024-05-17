@@ -1,20 +1,21 @@
 #!/usr/bin/env python3
-""" Convolution with channels """
+"""
+    Convolution with channels
+"""
+
 import numpy as np
 
 
 def convolve_channels(images, kernel, padding='same', stride=(1, 1)):
     """
-    Performs a convolution on images with channels.
+        Function that performs a convolution on images with channels
 
-    Args:
-        images (ndarray): Matrix of shape(m, h, w, c), multiple images.
-        kernel (ndarray): Matrix of shape(kh,kw, c), kernel for convolution.
-        padding (tuple): (ph,pw) or "same" or "valid".
-        stride (tuple): (sh, sw).
+        :param images: ndarray, shape(m, h, w, c), multiple images
+        :param kernel: ndarray, shape(kh,kw, c), kernel for convolution
+        :param padding: tuple (ph,pw) or 'same" or "valid'
+        :param stride: tuple (sh, sw)
 
-    Returns:
-        ndarray: The matrix containing the convolved images.
+        :return: ndarray containing convolved images
     """
     # size images, kernel, padding, stride
     m, h, w, c = images.shape

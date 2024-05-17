@@ -1,66 +1,71 @@
 #!/usr/bin/env python3
-""" Exponential class """
+"""
+    Class to represent an exponential distribution
+"""
 
 
 class Exponential:
-    """ Class that represents the Exponential distribution """
+    """
+        Class to represent an exponential distribution
+    """
+
     def __init__(self, data=None, lambtha=1.):
         """
-        Constructor method for the Exponential class
+            Class constructor
 
-        Args:
-            data (list, optional): List of the data to be used to estimate
-                the distribution. Defaults to None.
-            lambtha (float, optional): Expected number of occurences in a
-                given time frame. Defaults to 1..
+            :param data : List of the data to estimate the distribution
+            :param lambtha : Expected number of occurrences
 
-        Raises:
-            ValueError: If lambtha is less or equal to zero, or if data doesn't
-                contain at least two values.
-            TypeError: If data is not a list.
         """
-        if data is None:
-            if lambtha <= 0:
-                raise ValueError('lambtha must be a positive value')
-            else:
-                self.lambtha = float(lambtha)
 
+        if data is None:
+            # Use the given lambtha
+            self.lambtha = float(lambtha)
+            # check lambtha is positive
+            if self.lambtha <= 0:
+                raise ValueError("lambtha must be a positive value")
         else:
+            # calculate lambtha from data
             if not isinstance(data, list):
-                raise TypeError('data must be a list')
-            elif len(data) < 2:
-                raise ValueError('data must contain multiple values')
-            else:
-                self.lambtha = 1 / (sum(data) / len(data))
+                raise TypeError("data must be a list")
+
+            if len(data) < 2:
+                raise ValueError("data must contain multiple values")
+
+            # lambtha is the inverse of the mean of the data
+            self.lambtha = 1 / (sum(data) / len(data))
+
+        # Euler's number
+        self.e = 2.7182818285
 
     def pdf(self, x):
         """
-        Calculates the exponential PDF for a given time period.
+            Calculates the value of the PMF for a given number of “successes”
 
-        Args:
-            x (int/float): The time period
-
-        Returns:
-            float: The exponential PDF value for x
+            :param x: time period
+            :return: PMF value for x
         """
+
+        # check x is positive
         if x < 0:
             return 0
-        e = 2.7182818285
-        µ = self.lambtha
-        return µ * (e ** -(µ * x))
+        else:
+            # calculate pmf
+            pdf = self.lambtha * (self.e ** (-self.lambtha * x))
+            return pdf
 
     def cdf(self, x):
         """
-        Calculates the exponential CDF for a given time period.
+            Calculates the value of the CDF for a given time period
 
-        Args:
-            x (int/float): The time period
-
-        Returns:
-            float: The exponential CDF value for x
+            :param x: time period
+            :return: CDF value for x
         """
+
+        # check x is positive
         if x < 0:
             return 0
-        e = 2.7182818285
-        µ = self.lambtha
-        return 1 - e**(-µ * x)
+        else:
+            # calculate cdf
+            cdf = 1 - (self.e ** (-self.lambtha * x))
+            return cdf

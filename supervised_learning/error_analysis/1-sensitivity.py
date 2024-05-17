@@ -1,27 +1,29 @@
 #!/usr/bin/env python3
-""" Function sensitivity """
+"""
+    Sensitivity
+"""
+
 import numpy as np
 
 
 def sensitivity(confusion):
     """
-    Calculates the sensitivity for each class in a confusion matrix.
+        calculates the sensitivity for each class in a confusion matrix
 
-    Args:
-        confusion (ndarray): Confusion matrix of shape (classes, classes) where
-            row indices represent the correct labels and column indices
-            represent the predicted labels. Classes is the number of classes.
+        :param confusion: ndarray, shape(classes,classes), matrix confusion
 
-    Returns:
-        ndarray: Matrix of shape (classes,) containing the sensitivity of each
-            class.
+        :return: ndarray, shape(classes,) containing sensitivity of each class
     """
+    # number of classes
     classes = confusion.shape[0]
-    sensitivity = np.zeros((classes,))
+    # initialize sensitivity
+    sensitivity_matrix = np.zeros((classes,))
 
     for i in range(classes):
-        positif = confusion[i, i]
-        total = np.sum(confusion[i, :])
-        sensitivity[i] = positif / total
+        true_positif = confusion[i, i]
+        # sum along the row
+        total_positifs = np.sum(confusion[i, :])
 
-    return sensitivity
+        sensitivity_matrix[i] = true_positif / total_positifs
+
+    return sensitivity_matrix

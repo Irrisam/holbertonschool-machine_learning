@@ -1,54 +1,74 @@
 #!/usr/bin/env python3
-""" Neuron class """
+"""
+    Class Neuron
+"""
+
 import numpy as np
 
 
 class Neuron:
-    """ Defines a single neuron performing binary classification """
+    """
+        Class Neuron : define single neuron performing binary classification
+    """
 
     def __init__(self, nx):
         """
-        Constructor method for Neuron instances.
+            Class constructor
 
-        Args:
-            nx (int): The number of input features to the neuron. Must be
-            positive.
-
-        Raises:
-            TypeError: If nx is not an integer.
-            ValueError: If nx less than 1.
+            :param nx: number of input features to the neuron
         """
+        # Manage exceptions
         if not isinstance(nx, int):
-            raise TypeError('nx must be an integer')
-        elif nx < 1:
-            raise ValueError('nx must be positive')
-        else:
-            self.__W = np.random.normal(loc=0, scale=1, size=(1, nx))
-            self.__b = 0
-            self.__A = 0
+            raise TypeError("nx must be an integer")
+        if nx < 1:
+            raise ValueError("nx must be a positive integer")
+
+        # public instance attributes
+        # W: Weights vector : initialized using random normal distribution
+        self.__W = np.random.normal(loc=0, scale=1, size=(1, nx))
+        # b : bias & A activated output, both initialized to 0
+        self.__b = 0
+        self.__A = 0
 
     @property
     def W(self):
+        """
+            The weights vector for the neuron
+
+            :return: value for private attribute __W
+        """
         return self.__W
 
     @property
     def b(self):
+        """
+            The bias for the neuron
+
+            :return: value for private attribute __b
+        """
         return self.__b
 
     @property
     def A(self):
+        """
+            The activated output of the neuron (prediction)
+
+            :return: value for private attribute __A
+        """
         return self.__A
 
     def forward_prop(self, X):
         """
-        Calculates the forward propagation of the neuron.
+            method to calculate the forward propagation of the neuron
 
-        Args:
-            X(np.ndarray): Matrix of size (nx, m) that contains the input data.
+            :param X: ndarray (shape (nx, m)) contains input data
 
-        Returns:
-            The activated output of the neuron using sigmoid activation.
+            :return: forward propagation
         """
+        # multiplication of weight and add bias
         Z = np.matmul(self.__W, X) + self.__b
+
+        # activation function
         self.__A = 1 / (1 + np.exp(-Z))
+
         return self.__A

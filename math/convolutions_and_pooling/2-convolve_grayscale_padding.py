@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
-""" Convolution with Padding """
+"""
+    Convolution with Padding
+"""
+
 import numpy as np
 
 
 def convolve_grayscale_padding(images, kernel, padding):
     """
-    Performs a convolution on grayscale images with custom padding.
+        Function that performs a convolution on grayscale images
+        with custom padding
 
-    Args:
-        images (ndarray): Matrix of shape (m, h, w), multiple grayscale images.
-        kernel (ndarray): Matrix of shape (kh,kw), kernel for convolution.
-        padding (tupple): (ph,pw).
+        :param images: ndarray, shape(m, h, w), multiple grayscale images
+        :param kernel: ndarray, shape(kh,kw), kernel for convolution
+        :param padding: tupple (ph,pw)
 
-    Returns:
-        ndarray: The matrix containing the convolved images.C
+        :return: ndarray containing convolved images
     """
     # size images and kernel
     m, h, w = images.shape

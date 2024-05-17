@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-""" np_transpose function """
+""" function to transpose matrix
+"""
 
 
 def np_transpose(matrix):
-    """
-    Transposes the matrix
+    """ function : transpose matrix
 
-    Args:
-        matrix (ndarray): The matrix to transpose
+    Arguments:
+        matrix : matrix
 
     Returns:
-        ndarray: The transposed matrix
+        transposed matrix
     """
-    return matrix.T
+    return matrix.transpose()

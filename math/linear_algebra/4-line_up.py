@@ -1,22 +1,21 @@
 #!/usr/bin/env python3
-""" add_arrays function """
+""" function to add two arrays"""
 
 
 def add_arrays(arr1, arr2):
-    """
-    Adds up the elements of two arrays
+    """ function : add two array
 
-    Args:
-        arr1 (array of ints/floats): Array to add
-        arr2 (array of ints/floats): Array to add
+    Arguments:
+        arr1 : first array
+        arr2 : second array
 
     Returns:
-        list: The new list of summed elements
+        new list
     """
     if len(arr1) != len(arr2):
         return None
 
-    sum = []
+    result = []
     for i in range(len(arr1)):
-        sum.append(arr1[i] + arr2[i])
-    return sum
+        result.append(arr1[i] + arr2[i])
+    return result

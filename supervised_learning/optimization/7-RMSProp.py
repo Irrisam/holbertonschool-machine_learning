@@ -1,23 +1,30 @@
 #!/usr/bin/env python3
-""" RMSProp """
+"""
+   RMSProp
+"""
+
 import numpy as np
 
 
 def update_variables_RMSProp(alpha, beta2, epsilon, var, grad, s):
     """
-    Updates a variable using the RMSProp optimization algorithm.
+        function that updates a variable
+        using the RMSProp optimization algo
 
-    Args:
-        alpha (float): The learning rate.
-        beta2 (float): RMSProp weight.
-        epsilon (float): Small number to avoid division by zero.
-        var (ndarray): Matrix containing the variable to be updated.
-        grad (ndarray):cMatrix containing the gradient of var.
-        s (ndarray): previous second moment of var.
+        :param alpha: learning rate
+        :param beta2: RMSProp weight
+        :param epsilon: small number to avoid division by zero
+        :param var: ndarray, variable to be updated
+        :param grad: ndarray, gradient of var
+        :param s: previous second moment of var
 
-    Returns:
-        The updated variable and the new moment.
+        :return: updated variable and new moment
     """
+
+    # squared gradient
     squared_gradient = beta2 * s + (1 - beta2) * grad**2
+
+    # update the variable using RMSprop update rule
     update_var = var - alpha * grad / (np.sqrt(squared_gradient) + epsilon)
+
     return update_var, squared_gradient

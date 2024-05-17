@@ -1,18 +1,24 @@
 #!/usr/bin/env python3
-""" calculate_loss function """
+"""
+    Function softmax cross-entropy loss
+"""
+
 import tensorflow.compat.v1 as tf
 
 
 def calculate_loss(y, y_pred):
     """
-    Calculates the softmax cross-entropy loss of a prediction.
+        Method to calculate the softmax cross-entropy loss
+        of a prediction
 
-    Args:
-        y (placeholder): Placeholder for the labels of the input data.
-        y_pred (tensor): Tensor containing the network’s predictions.
+        :param y: placeholder for labels input data
+        :param y_pred: tensor network's prediction
 
-    Returns:
-        A tensor containing the loss of the prediction.
+        :return: tensor loss prediction
     """
-    loss = tf.losses.softmax_cross_entropy(onehot_labels=y, logits=y_pred)
+
+    loss = tf.compat.v1.losses.softmax_cross_entropy(
+        onehot_labels=y,
+        logits=y_pred)
+
     return loss

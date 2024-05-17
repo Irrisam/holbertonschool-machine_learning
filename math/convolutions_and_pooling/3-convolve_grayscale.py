@@ -1,20 +1,21 @@
 #!/usr/bin/env python3
-""" Strided convolution """
+"""
+    Strided convolution
+"""
+
 import numpy as np
 
 
 def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     """
-    Performs a convolution on grayscale images.
+        Function that performs a convolution on grayscale images
 
-    Args:
-        images (ndarray): Matrix of shape(m, h, w), multiple grayscale images.
-        kernel (ndarray): Matrix of shape(kh,kw), kernel for convolution.
-        padding (tuple): (ph, pw) and "same" or "valid".
-        stride (tuple): (sh, sw).
+        :param images: ndarray, shape(m, h, w), multiple grayscale images
+        :param kernel: ndarray, shape(kh,kw), kernel for convolution
+        :param padding: tuple (ph,pw) and 'same" or "valid'
+        :param stride: tuple (sh, sw)
 
-    Returns:
-        ndarray: The matrix containing the convolved images.
+        :return: ndarray containing convolved images
     """
     # size images, kernel, padding, stride
     m, h, w = images.shape
@@ -35,7 +36,7 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
             to the top or bottom edge
             + 1 : add 1 to ensure that even if the distance is a decimal,
             we round up to ensure the filter stays entirely within the image.
-        """
+            """
         ph = int((((h - 1) * sh + kh - h)/2) + 1)
         pw = int((((w - 1) * sw + kw - w)/2) + 1)
 

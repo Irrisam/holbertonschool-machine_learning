@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
-""" create_placeholder function """
+"""
+    Function Placeholders
+"""
+
 import tensorflow.compat.v1 as tf
 
 
 def create_placeholders(nx, classes):
     """
-    Creates two placeholders for the intput data.
+        Method to create placeholders
 
-    Args:
-        nx (int): The number of feature columns in our data.
-        classes (int): The number of classes in our classifier.
+        :param nx: number of feature columns in our data
+        :param classes: number of classes in our classifier
 
-    Returns:
-        Placeholders x and y for the input data to the neural network and
-        for the one-hot labels for the input data, respectively.
+        :return: Two placeholders x(input data) and y(one-hot labels)
     """
-    x = tf.placeholder(dtype="float32", shape=[None, nx], name="x")
-    y = tf.placeholder(dtype="float32", shape=[None, classes], name="y")
+
+    x = tf.placeholder("float32", [None, nx], name="x")
+    y = tf.placeholder("float32", [None, classes], name="y")
+
     return x, y

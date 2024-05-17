@@ -1,29 +1,44 @@
 #!/usr/bin/env python3
-""" Function specificity """
+"""
+    Specificity
+"""
+
 import numpy as np
 
 
 def specificity(confusion):
     """
-    Calculates the specificity for each class in a confusion matrix.
+        Function to calculates specificity of each class
+        in a confusion matrix
 
-    Args:
-        confusion (ndarray): Matrix of shape (classes, classes) where row
-            indices represent the correct labels and column indices represent
-            the predicted labels.
+        :param confusion: ndarray, shape(classes,classes) confusion matrix
 
-    Returns:
-        ndarray: Matrix of shape (classes,) containing the specificity of each
-            class.
+        :return: ndarray, shape(classes,), specificity of each class
+
+        Correction:
+        actual = np.sum(confusion, axis=1)
+        total = np.sum(confusion)
+        actual_no = total - actual
+        predicted = np.sum(confusion, axis=0)
+        diagonal = np.diagonal(confusion)
+        FP = predicted - diagonal
+
+        return 1 - FP / actual_no
     """
+    # number of classes
     classes = confusion.shape[0]
-    specificity = np.zeros((classes,))
+    # initialize specificity
+    specificity_matrix = np.zeros((classes,))
 
+    # formule specificity : true negativ / (true negativ + falses positif)
     for i in range(classes):
         true_pos = confusion[i, i]
-        false_pos = np.sum(confusion[:, i]) - true_pos
-        false_neg = np.sum(confusion[i, :]) - true_pos
-        true_neg = np.sum(confusion) - (true_pos + false_pos + false_neg)
-        specificity[i] = true_neg / (true_neg + false_pos)
+        falses_pos = np.sum(confusion[:, i]) - true_pos
+        falses_neg = np.sum(confusion[i, :]) - true_pos
 
-    return specificity
+        # TP = Total - (TP + FP + FN)
+        true_neg = np.sum(confusion) - (true_pos + falses_pos + falses_neg)
+
+        specificity_matrix[i] = true_neg / (true_neg + falses_pos)
+
+    return specificity_matrix

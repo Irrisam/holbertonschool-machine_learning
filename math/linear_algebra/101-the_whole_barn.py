@@ -1,43 +1,45 @@
 #!/usr/bin/env python3
-""" add_matrices function """
-
-
-def matrix_shape(matrix):
-    """
-    Returns the shape of a matrix as a list
-
-    Args:
-        matrix (n-dimensional array): The matrix to find the shape of
-
-    Returns:
-        list: The dimensions of the array as a list
-    """
-    if not matrix or not isinstance(matrix, list):
-        return []
-
-    sub_len = matrix_shape(matrix[0])
-    shape = [len(matrix)] + sub_len
-    return shape
+""" function that add two matrix
+"""
 
 
 def add_matrices(mat1, mat2):
-    """
-    Adds two matrices of unknown dimensions
+    """ function : add matrix1 and matrix2
 
-    Args:
-        mat1 (matrix): The matrix to add to
-        mat2 (matrix): The matrix to add from
+    Arguments:
+        mat1 : matrix 1
+        mat2 : matrix 2
 
     Returns:
-        matrix: The matrix corresponding to the sum of mat1 and mat2
+        new matrix
     """
-    if matrix_shape(mat1) != matrix_shape(mat2):
+
+    # compare type of mat1 and mat2
+    if type(mat1) != type(mat2):
         return None
 
-    sum = []
-    for ele1, ele2 in zip(mat1, mat2):
-        if isinstance(ele1, list):
-            sum.append(add_matrices(ele1, ele2))
+    # compare if mat1 and mat2 are list
+    if isinstance(mat1, list):
+        # if lengths are different or mat1 and mat2 are empty lists
+        if len(mat1) != len(mat2) or not mat1 or not mat2:
+            return None
+
+        # zip :  take 2 sequences return tuples of 2 elements
+        result = [add_matrices(m1, m2) for m1, m2 in zip(mat1, mat2)]
+
+        # check if any element in result is None
+        if any(element is None for element in result):
+            return None
+
+        # if result is a list of list with one element, return the element
+        if len(result) == 1:
+            return result[0]
         else:
-            sum.append(ele1 + ele2)
-    return sum
+            return result
+
+    else:
+        try:
+            return mat1 + mat2
+        except TypeError:
+            # In case mat1 and mat2 are not compatible for addition
+            return None

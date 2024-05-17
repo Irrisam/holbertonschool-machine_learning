@@ -1,27 +1,31 @@
 #!/usr/bin/env python3
-""" cat_matrices2D function """
+""" function to concatenate two matrix
+"""
 
 
 def cat_matrices2D(mat1, mat2, axis=0):
-    """
-    Concatenates two 2D matrices
+    """ function : concatenate two matrix
 
-    Args:
-        mat1 (2D list): 2D list to concatenate into
-        mat2 (2D list): 2D list to concatenate from
-        axis (int, optional): Axis to contenate along. Defaults to 0.
+    Arguments:
+        mat1 : first matrix
+        mat2 : second matrix
+        axis: specific axis for concatenation (0 vertical, 1 horizontal)
 
     Returns:
-        2D list: The concatenated matrix
+        new concatened matrix
     """
-    if (not mat1 or not mat2)\
-            or (axis == 0 and len(mat1[0]) != len(mat2[0]))\
-            or (axis == 1 and len(mat1) != len(mat2)):
+
+    if axis == 0 and len(mat1[0]) != len(mat2[0]):
         return None
-    concat = []
+    elif axis == 1 and len(mat1) != len(mat2):
+        return None
+    elif not mat1 or not mat2:
+        return None
+
     if axis == 0:
-        concat = mat1 + mat2
+        return mat1 + mat2
+    elif axis == 1:
+        # zip :  take 2 sequences return tuples of 2 elements
+        return [row1 + row2 for row1, row2 in zip(mat1, mat2)]
     else:
-        for i in range(len(mat2)):
-            concat.append(mat1[i] + mat2[i])
-    return concat
+        return None

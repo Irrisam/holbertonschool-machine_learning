@@ -1,28 +1,29 @@
 #!/usr/bin/env python3
-""" poly_derivative function """
+""" Function that calculates the derivative of a polynomial"""
 
 
 def poly_derivative(poly):
-    """
-    Returns the derivative of a polynomial
+    """ function : calculate derivative of a polynomial
 
-    Args:
-        poly (list): The polynomial as a list of coefficients. The index in the
-        list represents the power of x.
+        Arguments:
+            poly: list of coefficients representing a polynomial
+                index : represent the power of x that the coefficient
+                belongs to
 
-    Returns:
-        list: The list of coefficients corresponding to the derivative of poly
+        Returns:
+            new list of coefficients representing the derivative of
+            the polynomial
     """
-    if not poly\
-       or not isinstance(poly, list)\
-       or any([not isinstance(ele, int) for ele in poly]):
+    if not poly or not isinstance(poly, list) \
+            or not all(isinstance(cuff, (int, float)) for cuff in poly):
         return None
+    else:
+        # calculate derivative of polynom
+        derivative_cuff = [n * cuff for n, cuff in enumerate(poly[1:],
+                                                             start=1)]
 
-    if len(poly) == 1:
-        return [0]
+        # special case derivative is 0
+        if not derivative_cuff:
+            return [0]
 
-    derivative = []
-    for power in range(1, len(poly)):
-        coef = poly[power]
-        derivative.append(power * coef)
-    return derivative
+        return derivative_cuff

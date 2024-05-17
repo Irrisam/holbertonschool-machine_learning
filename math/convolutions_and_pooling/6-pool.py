@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
-""" Pooling """
+"""
+    Pooling
+"""
+
 import numpy as np
 
 
 def pool(images, kernel_shape, stride, mode='max'):
     """
-    Performs pooling on images.
+            Function that performs pooling on images
 
-    Args:
-        images (ndarray): Matrix of shape (m, h, w, c), multiple images.
-        kernel_shape (ndarray): Matrix of shape (kh,kw), for pooling.
-        stride (tuple): (sh, sw).
-        mode (type): of pooling 'max' or 'avg'.
+        :param images: ndarray, shape(m, h, w, c), multiple images
+        :param kernel_shape: ndarray, shape(kh,kw), kernel shape for pooling
+        :param stride: tuple (sh, sw)
+        :param mode: type of pooling 'max' or 'avg'
 
-    Returns:
-        ndarray: The matrix containing the pooled images.
+        :return: ndarray containing pooled images
+
     """
     # size images, kernel, padding, stride
     m, h, w, c = images.shape

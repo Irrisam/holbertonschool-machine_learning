@@ -1,17 +1,26 @@
 #!/usr/bin/env python3
-""" cat_arrays function """
+""" function to concatenate two arrays
+"""
 
 
 def cat_arrays(arr1, arr2):
-    """
-    Concatenates two lists
+    """ function : concatenate two array
 
-    Args:
-        arr1 (list): List to concatenate into
-        arr2 (list): List to concatenate from
+    Arguments:
+        arr1 : first array
+        arr2 : second array
 
     Returns:
-        list: The concatenanted list
+        new array
     """
-    concat = arr1 + arr2
-    return concat
+    len1 = len(arr1)
+    len2 = len(arr2)
+
+    new_array = []
+
+    for i in range(len1):
+        new_array.append(arr1[i])
+    for j in range(len2):
+        new_array.append(arr2[j])
+
+    return new_array

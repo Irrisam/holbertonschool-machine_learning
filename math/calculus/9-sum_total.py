@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
-""" summation_i_squared function """
+""" Function that calculates sum of all i squared"""
 
 
 def summation_i_squared(n):
-    """
-    Returns the sum from 1 to n of squared integers
+    """ function : calculate sum of i squared
 
-    Args:
-        n (int): The stopping condition
+        Arguments:
+            n: stopping condition
 
-    Returns:
-        int: The total sum
+        Returns:
+            integer value
     """
-    if type(n) is not int or n < 1:
+    if n < 1 or not isinstance(n, int):
         return None
-
-    sum = (n * (n + 1) * (2 * n + 1)) // 6
-    return sum
+    else:
+        # somme k^2 = n * (n+1) * (2*n+1)
+        return(n * (n + 1) * (2 * n + 1)) // 6

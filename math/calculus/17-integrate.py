@@ -1,33 +1,37 @@
 #!/usr/bin/env python3
-""" poly_integral function """
+""" Function that calculates the integral of a polynomial"""
 
 
 def poly_integral(poly, C=0):
-    """
-    Returns the integral of a polynomial
+    """ function : calculate integral of a polynomial
 
-    Args:
-        poly (list): The polynomial as a list of coefficients
-        C (int, optional): The integration constant. Defaults to 0.
+        Arguments:
+            poly: list of coefficients representing a polynomial
+                index : represent the power of x that the coefficient
+                belongs to
+            C: integration constant
 
-    Returns:
-        list: The integral polynomial as a list
+        Returns:
+            new list of coefficients representing the integral of
+            the polynomial
+            None if poly or C are not valid
     """
-    if not poly\
-       or not isinstance(poly, list)\
-       or any([not isinstance(ele, int) for ele in poly])\
-       or not isinstance(C, int):
+    # test poly : list or element are number or C is int
+    if not poly or not isinstance(poly, list) \
+            or not all(isinstance(cuff, (int, float)) for cuff in poly) \
+            or not isinstance(C, int):
         return None
+    # special case
+    elif poly == [0]:
+        return[C]
+    else:
+        # calculate integral of polynom
+        # ∫xn dx = x^(n+1)/(n+1) + C
+        integral_cuff = [poly[idx] / (idx + 1) for idx in range(0, len(poly))]
 
-    if poly == [0]:
-        return [C]
+        # insert C at the beginning
+        integral_cuff.insert(0, float(C))
 
-    integral = [C]
-    for power in range(len(poly)):
-        coef = poly[power]
-        if coef % (power + 1) == 0:
-            new_coef = coef // (power + 1)
-        else:
-            new_coef = coef / (power + 1)
-        integral.append(new_coef)
-    return integral
+        # return whole number if integer, else float
+        return [float(cuff) if not cuff.is_integer() else int(cuff)
+                for cuff in integral_cuff]

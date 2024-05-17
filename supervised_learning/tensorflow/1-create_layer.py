@@ -1,21 +1,32 @@
 #!/usr/bin/env python3
-""" create _layer function """
+"""
+    Function Create Layer
+"""
+
 import tensorflow.compat.v1 as tf
 
 
 def create_layer(prev, n, activation):
     """
-    Creates a layer for the input data.
+        Method to create layer
 
-    Args:
-        prev (Tensor): The tensor output of the previous layer.
-        n (int): The number of nodes in the layer to create.
-        activation (str): The activation function that the layer should use.
+        :param prev: tensor output of previous layer
+        :param n: number of nodes in the layer to create
+        :param activation: activation function layer should use
 
-    Returns:
-        The tensor output of the layer.
+        :return: tensor output of the layer
     """
+
+    # set initialization to He et. al
     initializer = tf.keras.initializers.VarianceScaling(mode='fan_avg')
-    layer = tf.keras.layers.Dense(n, activation=activation,
-                                  kernel_initializer=initializer, name="layer")
-    return layer(prev)
+
+    # create layer Dense with paramaters
+    new_layer = tf.layers.Dense(n,
+                                activation=activation,
+                                kernel_initializer=initializer,
+                                name="layer")
+
+    # apply layer to input
+    output = new_layer(prev)
+
+    return output

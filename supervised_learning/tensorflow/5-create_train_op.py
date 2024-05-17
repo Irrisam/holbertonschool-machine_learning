@@ -1,19 +1,27 @@
 #!/usr/bin/env python3
-""" create_train_op function """
+"""
+    Function training operation
+"""
+
 import tensorflow.compat.v1 as tf
 
 
 def create_train_op(loss, alpha):
     """
-    Creates the training operation for the network.
+        Method that creates the training operation for NN
+    :param loss: loss of NN's prediction
+    :param alpha: learning rate
 
-    Args:
-        loss (tensor): The loss of the network’s prediction.
-        alpha (float): The leearning rate.
-
-    Returns:
-        An operation that trains the network using gradient descent.
+    :return: operation that trains NN using gradient descent
     """
-    grad_descent = tf.train.GradientDescentOptimizer(learning_rate=alpha,
-                                                     name='GradientDescent')
-    return grad_descent.minimize(loss)
+
+    # optimizer gradient descent
+    optimizer = tf.compat.v1.train.GradientDescentOptimizer(
+        learning_rate=alpha,
+        name='GradientDescent'
+    )
+
+    # train
+    train = optimizer.minimize(loss)
+
+    return train

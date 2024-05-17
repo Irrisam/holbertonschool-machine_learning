@@ -1,90 +1,80 @@
 #!/usr/bin/env python3
-""" Poisson class """
+""" Class Poisson that represents a poisson distribution"""
 
 
 class Poisson:
-    """ Class that represents a poisson distribution """
-    def __init__(self, data=None, lambtha=1.):
+    """
+        Class Poisson that represents a poisson distribution
+    """
+    def __init__(self, data=None, lambtha=1):
         """
-        Constructor function
+            Class constructor
 
-        Args:
-            data (list, optional): List of the data to be used to estimate
-                the distribution. Defaults to None.
-            lambtha (_type_, optional): The expected number of occurences
-                in a given time frame (the mean number of successes).
-                Defaults to 1..
-
-        Raises:
-            ValueError: If lambtha is not a positive value
-            TypeError: If data is not a list
-            ValueError: If data doesn't contain multiple values
+            :param data: list of values used to estimate the distribution
+            :param lambtha: lambda value of the distribution
         """
-        if data is None:
-            if lambtha <= 0:
-                raise ValueError('lambtha must be a positive value')
-            else:
-                self.lambtha = float(lambtha)
 
-        else:
+        if data is not None:
             if not isinstance(data, list):
-                raise TypeError('data must be a list')
-            elif len(data) < 2:
-                raise ValueError('data must contain multiple values')
-            else:
-                self.lambtha = sum(data) / len(data)
+                raise TypeError("data must be a list")
+            if len(data) < 2:
+                raise ValueError("data must contain multiple values")
+            self.lambtha = sum(data) / len(data)
+        else:
+            if lambtha <= 0:
+                raise ValueError("lambtha must be a positive value")
+            self.lambtha = float(lambtha)
+
+        # Euler's number
+        self.e = 2.7182818285
+
+    def factorial(self, n):
+        """
+            Accessory function to calculate factorial of a number
+        """
+        result = 1
+        for i in range(1, n + 1):
+            result *= i
+        return result
 
     def pmf(self, k):
         """
-        Calculates the PMF for a guven number of successes
+            Calculates the value of the PMF for a given number of “successes”
 
-        Args:
-            k (int): Number of successes.
-
-        Returns:
-            float: The PMF value for k.
+            :param k: number of “successes”
+            :return: PMF value for k
         """
-        if k <= 0:
-            return 0
 
-        elif not isinstance(k, int):
+        # convert k to int in case it is a float
+        if not isinstance(k, int):
             k = int(k)
-
-        e = 2.7182818285
-        µ = self.lambtha
-        kfacto = 1
-        for i in range(1, k + 1):
-            kfacto *= i
-
-        return (e ** -µ) * (µ ** k) / kfacto
+        # check k is positive
+        if k < 0:
+            return 0
+        else:
+            # calculate factorial of k
+            fk = self.factorial(k)
+            # calculate pmf
+            pmf = ((self.lambtha ** k) * (self.e ** (-self.lambtha))) / fk
+            return pmf
 
     def cdf(self, k):
         """
-        Calculates the CDF for a given number of succeses
+            Calculates the value of the CDF for a given number of “successes”
 
-        Args:
-            k (int): The number of successes
-
-        Returns:
-            float: The CDF value for k successes
+            :param k: number of “successes”
+            :return: CDF value for k
         """
-        def ifacto(i):
-            """ Computes the factorial for i """
-            ifacto = 1
-            for j in range(1, i + 1):
-                ifacto *= j
-            return ifacto
 
-        if k <= 0:
-            return 0
-
-        elif not isinstance(k, int):
+        # convert k to int in case it is a float
+        if not isinstance(k, int):
             k = int(k)
-
-        µ = self.lambtha
-        sum = 0
-        for i in range(k + 1):
-            sum += (µ ** i) / ifacto(i)
-
-        e = 2.7182818285
-        return (e ** -µ) * sum
+        # check k is positive
+        if k < 0:
+            return 0
+        else:
+            # calculate cdf
+            cdf = 0
+            for i in range(0, k + 1):
+                cdf += self.pmf(i)
+            return cdf

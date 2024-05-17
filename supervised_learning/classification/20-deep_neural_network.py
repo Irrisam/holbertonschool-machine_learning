@@ -1,128 +1,148 @@
 #!/usr/bin/env python3
-""" DeepNeuralNetwork Class"""
+"""
+    Class DeepNeuralNetwork : deep NN performing binary classification
+"""
+
 import numpy as np
 
 
 class DeepNeuralNetwork:
-    """ Defines a deep neural network performing binary classification """
+    """
+        class DeepNeuralNetwork
+    """
 
     def __init__(self, nx, layers):
         """
-        Class constructor function for DeepNeuralNetwork instances.
+            class constructor
 
-        Args:
-            nx (int): The number of input features.
-            layers (list): List representing the number of nodes in each layer
-                of the network.
+            :param nx: number of input features
+            :param layers: number of nodes in each layer
 
-        Raises:
-            TypeError: If nx is not an integer or layers is not a list of
-                positive integers.
-            ValueError: If nx is not positive.
         """
 
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
-        if nx <= 0:
+        if nx < 1:
             raise ValueError("nx must be a positive integer")
-
         if not isinstance(layers, list) or layers == []:
             raise TypeError("layers must be a list of positive integers")
         if (not isinstance(layers, list) or
                 not all(map(lambda x: isinstance(x, int) and x > 0, layers))):
             raise TypeError("layers must be a list of positive integers")
 
+        # private attribute
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
 
+        # initialize parameters with He method
         for i in range(self.__L):
-            current = layers[i]
-            previous = layers[i - 1]
             if i == 0:
-                self.__weights["W" + str(i+1)] = (np.random.randn(current, nx)
+                self.__weights["W" + str(i+1)] = (np.random.randn(layers[i],
+                                                                  nx)
                                                   * np.sqrt(2 / nx))
             else:
-                self.__weights["W" + str(i+1)] = (np.random.randn(current,
-                                                                  previous)
-                                                  * np.sqrt(2 / previous))
-
-            self.__weights["b" + str(i+1)] = np.zeros((current, 1))
+                self.__weights["W" + str(i+1)] = \
+                    (np.random.randn(layers[i],
+                                     layers[i - 1])
+                     * np.sqrt(2 / layers[i - 1]))
+            self.__weights["b" + str(i+1)] = np.zeros((layers[i], 1))
 
     @property
     def L(self):
+        """
+            The number of layers in neural network
+
+            :return: value for private attribute __L
+        """
         return self.__L
 
     @property
     def cache(self):
+        """
+            Dictionary to hold all intermediary value
+            Upon instantiation, empty
+
+            :return: value for private attribute __cache
+        """
         return self.__cache
 
     @property
     def weights(self):
+        """
+            Dictionary hold all weights and biased of network
+
+            :return: value for private attribute __weights
+        """
         return self.__weights
 
     def forward_prop(self, X):
         """
-        Calculates the forward propagation of the neural network.
+            method calculate forward propagation of neural network
 
-        Args:
-            X (ndarray): Matrix with shape (nx, m) that contains the input data
+            :param X: ndarray, shape(nx,m) input data
 
-        Returns:
-            The output of the neural network and the cache.
+            :return: output neural network and cache
         """
 
+        # store X in A0
         if 'A0' not in self.__cache:
             self.__cache['A0'] = X
 
         for i in range(1, self.__L + 1):
+            # first layer
             if i == 1:
                 W = self.__weights["W{}".format(i)]
                 b = self.__weights["b{}".format(i)]
+                # multiplication of weight and add bias
                 Z = np.matmul(W, X) + b
-            else:
+            else:  # next layers
                 W = self.__weights["W{}".format(i)]
                 b = self.__weights["b{}".format(i)]
                 X = self.__cache['A{}'.format(i-1)]
                 Z = np.matmul(W, X) + b
 
+            # activation function
             self.__cache["A{}".format(i)] = 1 / (1 + np.exp(-Z))
 
         return self.__cache["A{}".format(i)], self.__cache
 
     def cost(self, Y, A):
         """
-        Calculates cost of the model using logistic regression.
+            Calculate cost of the model using logistic regression
 
-        Args:
-            Y (ndarray): Matrix with shape (1, m) that contains the correct
-                labels for the input data.
-            A (ndarray): Matrix with shape (1, m) that contains the correct
-                labels for the input data.
+            :param Y: ndarray, shape(1,m) correct labels
+            :param A: ndarray, shape(1,m) activated output
 
-        Returns:
-            _type_: _description_
+            :return: cost
         """
+
+        # store m value
         m = Y.shape[1]
-        cost = -(1 / m) * np.sum((Y * np.log(A) + (1 - Y) *
-                                  np.log(1.0000001 - A)))
-        return cost
+
+        # calculate log loss function
+        log_loss = -(1 / m) * np.sum((Y * np.log(A) + (1 - Y) *
+                                      np.log(1.0000001 - A)))
+
+        return log_loss
 
     def evaluate(self, X, Y):
         """
-        Evaluates the network's prediction.
+                Method to evaluate the network's prediction
 
-        Args:
-            X (ndarray): Matrix with shape (nx, m) that contains the input
-                data.
-            Y (ndarray): Matrix with shape (1, m) that contains the correct
-                labels for the input data.
+                :param X: ndarray shape(nx,m) contains input data
+                :param Y: ndarray shape (1,m) correct labels
 
-        Returns:
-            The neuron’s prediction and the cost of the network.
-        """
+                :return: network's prediction and cost of the network
+                """
+
+        # run forward propagation
         output, cache = self.forward_prop(X)
-        cost = self.cost(Y, output)
-        predictions = np.where(output >= 0.5, 1, 0)
 
-        return predictions, cost
+        # calculate cost
+        cost = self.cost(Y, output)
+
+        # label values
+        result = np.where(output >= 0.5, 1, 0)
+
+        return result, cost
