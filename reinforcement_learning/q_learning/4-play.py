@@ -38,6 +38,8 @@ def play(env, Q, max_steps=100):
         state = new_state
 
         if done:
+            rendered_output = env.render()
+            rendered_outputs.append(rendered_output)
             break
 
     return total_rewards, rendered_outputs
