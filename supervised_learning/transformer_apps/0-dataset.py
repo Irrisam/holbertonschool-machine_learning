@@ -2,7 +2,7 @@
 """
     Class Dataset to load and preprocess the dataset
 """
-import tensorflow.compat.v2 as tf
+import transformers as tf
 import tensorflow_datasets as tfds
 
 
