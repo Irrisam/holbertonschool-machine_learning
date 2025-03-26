@@ -1,40 +1,40 @@
 #!/usr/bin/env python3
 """
-    Module to play FrozenLake
+    module to play frozen-lake
 """
 import numpy as np
 
 
 def play(env, Q, max_steps=100):
     """
-        function that has the trained agent play an episode
+        lets the trained agent play an episode
 
     :param env: FrozenLakeEnv instance
-    :param Q: ndarray containing Q-table
-    :param max_steps: max number of steps in the episode
+    :param Q: ndarray, the Q-table
+    :param max_steps: max number of steps allowed per episode
 
-    :return: total rewards for the episode
+    :return: total rewards earned in the episode
     """
 
-    # intitial state
+    # initial state
     state = env.reset()
 
     total_rewards = 0
 
     for step in range(max_steps):
-        # actual state
+        # render current state
         env.render()
 
-        # select best action in Q-table
+        # pick the best action from Q-table
         action = np.argmax(Q[state, :])
 
-        # apply action
+        # take the action and get new state and reward
         new_state, reward, done, info = env.step(action)
 
-        # update reward
+        # accumulate reward
         total_rewards += reward
 
-        # next state
+        # update state
         state = new_state
 
         if done:
