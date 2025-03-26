@@ -16,8 +16,8 @@ def policy(matrix, weight):
     :return: matrix of proba for each possible action
     """
     # matrix product: score for each possible action
-    z = matrix @ weight
-
+    matrix = np.atleast_2d(matrix)  # S'assure que matrix est bien 2D
+    z = matrix @ weight  # Produit matriciel
     # Softmax: normalize exp scores = distribution proba of action
     exp_z = np.exp(z - np.max(z, axis=1, keepdims=True))
     softmax = exp_z / np.sum(exp_z, axis=1, keepdims=True)
@@ -33,6 +33,7 @@ def policy_gradient(state, weight):
 
     :return: chosen action and its corresponding gradient
     """
+    state = np.atleast_2d(state)
     # Get policy probabilities
     probs = policy(state, weight)
 
