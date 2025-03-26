@@ -2,7 +2,6 @@
 """
     module to initialize q-table
 """
-import gymnasium as gym
 import numpy as np
 
 
