@@ -31,12 +31,12 @@ def train(env, Q, episodes=5000, max_steps=100, alpha=0.1,
     for episode in range(episodes):
         episode_rewards = 0
 
-        state = env.reset()
+        state, info = env.reset()
         for step in range(max_steps):
             # choose action using epsilon-greedy
             action = epsilon_greedy(Q, state, epsilon)
             # get next state and reward from the environment
-            next_state, reward, done, info = env.step(action)
+            next_state, reward, done, info, truncated = env.step(action)
 
             # update reward if falling into a hole
             if done and reward == 0:
