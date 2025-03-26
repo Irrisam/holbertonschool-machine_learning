@@ -24,6 +24,7 @@ def policy(matrix, weight):
 
     return softmax
 
+
 def policy_gradient(state, weight):
     """
         Computes the Monte-Carlo policy gradient.
@@ -46,6 +47,7 @@ def policy_gradient(state, weight):
     # Compute gradients for each weight
     for i in range(state.shape[1]):
         for j in range(weight.shape[1]):
-            grad[i, j] = state[0, i] * ((1 - probs[0, j]) if j == action else -probs[0, j])
+            grad[i, j] = state[0, i] * ((1 - probs[0, j]) 
+                                        if j == action else -probs[0, j])
 
     return action, grad
