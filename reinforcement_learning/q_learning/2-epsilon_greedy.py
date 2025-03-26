@@ -1,31 +1,30 @@
 #!/usr/bin/env python3
 """
-    Module to implement Epsilon Greedy
+    module to implement epsilon-greedy
 """
-import gym
 import numpy as np
 
 
 def epsilon_greedy(Q, state, epsilon):
     """
-        function that uses epsilon-greedy to determine the next action
+        uses epsilon-greedy to pick the next action
 
         :param Q: ndarray, Q-table
         :param state: current state
-        :param epsilon: epsilon use for the calculation
+        :param epsilon: epsilon value for exploration vs exploitation
 
-        using random uniform distribution to set if algo explore or exploit
-        using random.randint to determine exploration action
+        it uses a random uniform distribution to decide if the algorithm explores or exploits
+        random.randint is used to choose an action during exploration
 
-        :return: next action index
+        :return: the index of the next action
     """
-    # determine if algo explore or exploit
+    # decide whether to explore or exploit
     p = np.random.uniform(0, 1)
 
-    # exploration : random exploration
+    # exploration: pick a random action
     if p < epsilon:
         action = np.random.randint(0, Q.shape[1])
-    # exploitation (p > epsilon)
+    # exploitation (p >= epsilon): choose the best action based on Q-table
     else:
         action = np.argmax(Q[state, :])
 
