@@ -2,7 +2,7 @@
 """
     module to load the frozen-lake environment from gym
 """
-import gym
+import gymnasium as gym
 
 
 def load_frozen_lake(desc=None, map_name=None, is_slippery=False):
