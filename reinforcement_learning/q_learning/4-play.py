@@ -3,6 +3,8 @@
     module to play q-learning
 """
 import numpy as np
+
+
 def play(env, Q, max_steps=100):
     """
         lets the trained agent play an episode
@@ -11,14 +13,12 @@ def play(env, Q, max_steps=100):
     :param Q: ndarray, the Q-table
     :param max_steps: max number of steps allowed per episode
 
-    :return: total rewards earned in the episode and the list of rendered outputs
+    :return: total rewards earned in episode and list of rendered outputs
     """
-
     # initial state
-    state, _ = env.reset()  
-
+    state, _ = env.reset()
     total_rewards = 0
-    rendered_outputs = [] 
+    rendered_outputs = []
 
     for step in range(max_steps):
         # render current state
