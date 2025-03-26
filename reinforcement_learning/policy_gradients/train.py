@@ -24,7 +24,8 @@ def train(env, nb_episodes, alpha=0.000045, gamma=0.98, show_result=False):
     scores = []
 
     for episode in range(1, nb_episodes + 1):
-        state = env.reset()[None, :]  # Reset env and format state
+        obs, _ = env.reset()  # Récupérer uniquement l'état initial
+        state = obs[None, :]  # Ajouter une dimension pour correspondre aux poids  # Reset env and format state
         grad = np.zeros_like(weight)  # Initialize gradient
         score = 0  # Reset score counter
         done = False
@@ -34,7 +35,7 @@ def train(env, nb_episodes, alpha=0.000045, gamma=0.98, show_result=False):
             action, delta_grad = policy_gradient(state, weight)
 
             # Take action in env
-            new_state, reward, done, _ = env.step(action)
+            new_state, reward, done, info, truncated = env.step(action)
             new_state = new_state[None, :]
 
             # Update episode score
