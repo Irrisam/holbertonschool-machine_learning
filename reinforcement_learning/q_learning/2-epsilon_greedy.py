@@ -2,7 +2,6 @@
 """
     module to implement epsilon-greedy
 """
-import gymnasium as gym
 import numpy as np
 
 
@@ -13,7 +12,8 @@ def epsilon_greedy(Q, state, epsilon):
         :param Q: ndarray, Q-table
         :param state: current state
         :param epsilon: epsilon value for exploration vs exploitation
-        random.randint is used to choose an action during exploration
+
+        pycodestyle an action during exploration
 
         :return: the index of the next action
     """
