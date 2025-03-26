@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-    Train agent that can play Atari's Breakout
+    Training an agent to play Atari's Breakout
 """
 from __future__ import division
 import gymnasium as gym
@@ -20,19 +20,16 @@ from rl.core import Processor
 #         Setup PARAMETER           #
 #####################################
 
-# Configuration parameters for the whole setup
+# Config settings for the whole setup
 seed = 42
-gamma = 0.99  # Discount factor for past rewards
-epsilon = 1.0  # Epsilon greedy parameter
-epsilon_min = 0.1  # Minimum epsilon greedy parameter
-epsilon_max = 1.0  # Maximum epsilon greedy parameter
-epsilon_interval = (
-        epsilon_max - epsilon_min
-)  # Rate at which to reduce chance of random action being taken
-batch_size = 32  # Size of batch taken from replay buffer
+gamma = 0.99  # Discount factor for rewards
+epsilon = 1.0  # Epsilon for exploration
+epsilon_min = 0.1  # Min epsilon value
+epsilon_max = 1.0  # Max epsilon value
+epsilon_interval = (epsilon_max - epsilon_min)  # Rate of random action decay
+batch_size = 32  # Batch size from replay buffer
 max_steps_per_episode = 10000
-max_episodes = 10  # Limit training episodes, will run until solved
-                    # if smaller than 1
+max_episodes = 10  # Episodes to train, will continue until solved if < 1
 
 
 #####################################
@@ -41,34 +38,29 @@ max_episodes = 10  # Limit training episodes, will run until solved
 
 class CompatibilityWrapper(gym.Wrapper):
     """
-        Compatibility wrapper for gym env to ensure
-        compatibility with older versions of gym
+        Compatibility wrapper to ensure
+        older gym env versions work properly
     """
 
     def step(self, action):
         """
-            take a step in the env using the given action
+            Perform one step in the environment using the given action
 
-        :param action: action to be taken in env
+        :param action: action taken in env
 
-        :return: tuple containing
-            - observation: obs from env after action taken
-            - reward: reward obtain after taking the action
-            - done: bool indicating whether episode has ended
-            - info: additional information from the env
+        :return: tuple with observation, reward, done, and additional info
         """
-        observation, reward, terminated, truncated, info = (
-            self.env.step(action))
+        observation, reward, terminated, truncated, info = self.env.step(action)
         done = terminated or truncated
         return observation, reward, done, info
 
     def reset(self, **kwargs):
         """
-            reset env and return the initial obs
+            Reset the environment and return initial observation
 
-        :param kwargs: additional args
+        :param kwargs: any extra arguments
 
-        :return: observation: initial obs of the env
+        :return: initial observation
         """
         observation, info = self.env.reset(**kwargs)
         return observation
@@ -76,25 +68,14 @@ class CompatibilityWrapper(gym.Wrapper):
 
 def create_atari_environment(env_name):
     """
-        Create and configure an Atari env for reinforcement learning
+        Set up and configure Atari environment for RL
 
-    :param env_name: name of the Atari env
+    :param env_name: Atari environment name
 
-    :return: gym.Env: configured Atari env
+    :return: gym.Env: processed Atari environment
     """
-    # Create specified Atari env with RDB rendering mode
     env = gym.make(env_name, render_mode='rgb_array')
-    # Apply preprocessing to the env
-    # - Resize the screen to 84x84
-    # - Convert observations to grayscale
-    # - Apply frame skipping
-    # - Apply a random number of no-ops at the start of each episode
-    env = AtariPreprocessing(env,
-                             screen_size=84,
-                             grayscale_obs=True,
-                             frame_skip=1,
-                             noop_max=30)
-    # Wrap the environment to ensure compatibility with older versions of gym
+    env = AtariPreprocessing(env, screen_size=84, grayscale_obs=True, frame_skip=1, noop_max=30)
     env = CompatibilityWrapper(env)
     return env
 
@@ -105,13 +86,13 @@ def create_atari_environment(env_name):
 
 def build_model(window_length, shape, actions):
     """
-        Build a CNN model for reinforcement learning
+        Build a CNN model for RL
 
-    :param window_length: int, number of frames to stack as input
-    :param shape: tuple, shape of the input img (height, width, channels)
-    :param actions: int, number possible actions in env
+    :param window_length: frames stacked as input
+    :param shape: input image shape (height, width, channels)
+    :param actions: number of possible actions in the environment
 
-    :return: keras.models.Sequential: compiled keras model
+    :return: keras.models.Sequential: compiled CNN model
     """
     model = Sequential()
     model.add(Permute((2, 3, 1), input_shape=(window_length,) + shape))
@@ -130,41 +111,39 @@ def build_model(window_length, shape, actions):
 
 class AtariProcessor(Processor):
     """
-        Custom processor class for Atari env
-        to handle obs and rewards before passing to DQN agent
+        Custom processor for Atari environment
+        to handle observations and rewards before passing to DQN agent
     """
 
     def process_observation(self, observation):
         """
-            Process the obs by convert in numpy array
+            Convert observation into a numpy array
 
-        :param observation: (object) obs from env
+        :param observation: input observation from environment
 
-        :return: processed obs
+        :return: processed observation
         """
         if isinstance(observation, tuple):
             observation = observation[0]
 
-        img = np.array(observation)
-        img = img.astype('uint8')
+        img = np.array(observation).astype('uint8')
         return img
 
     def process_state_batch(self, batch):
         """
-            Process a batch of states by normalizing the pixel values
+            Normalize pixel values for batch of states
 
-        :param batch: ndarray, batch of states
+        :param batch: batch of states
 
-        :return: ndarray, processed batch of states
+        :return: normalized batch
         """
-        processed_batch = batch.astype('float32') / 255.
-        return processed_batch
+        return batch.astype('float32') / 255.
 
     def process_reward(self, reward):
         """
-            Clip the reward to be within the range [-1,1]
+            Clip the reward to be between -1 and 1
 
-        :param reward: float, reward from the env
+        :param reward: incoming reward
 
         :return: clipped reward
         """
@@ -172,19 +151,17 @@ class AtariProcessor(Processor):
 
 
 if __name__ == "__main__":
-    # 1. CREATE ENV
+    # 1. SETUP ENVIRONMENT
 
     env = create_atari_environment('ALE/Breakout-v5')
-    # Reset env
     observation = env.reset()
 
-    # Visualise one frame
+    # Show the initial frame
     plt.imshow(observation, cmap='gray')
     plt.title("Initial Observation")
     plt.axis('off')
     plt.show()
 
-    # get number of possible actions
     nb_actions = env.action_space.n
 
     # 2. BUILD MODEL
@@ -192,25 +169,15 @@ if __name__ == "__main__":
     window_length = 4
     model = build_model(window_length, observation.shape, nb_actions)
 
-    # 3. DEFINE AGENT
+    # 3. SET UP AGENT
 
-    # Define sequential memory to store agent's experience
-    memory = SequentialMemory(limit=1000000,
-                              window_length=window_length)
-
-    # Define processor to preprocess obs, states and reward
+    memory = SequentialMemory(limit=1000000, window_length=window_length)
     processor = AtariProcessor()
 
-    # Define an epsilon-greedy policy with linear annealing
-    # for exploration-exploitation trade-off
-    policy = LinearAnnealedPolicy(EpsGreedyQPolicy(),
-                                  attr='eps',
-                                  value_max=1.,
-                                  value_min=.1,
-                                  value_test=.05,
-                                  nb_steps=1000000)
+    policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps',
+                                  value_max=1., value_min=.1,
+                                  value_test=.05, nb_steps=1000000)
 
-    # Define a DQN agent with specified components and parameters
     dqn = DQNAgent(model=model,
                    nb_actions=nb_actions,
                    policy=policy,
@@ -222,22 +189,20 @@ if __name__ == "__main__":
                    train_interval=4,
                    delta_clip=1.)
 
-    # Compile the DQN agent with Adam optimizer and mae as metrics
-    dqn.compile(Adam(learning_rate=0.00025),
-                metrics=['mae'])
+    dqn.compile(Adam(learning_rate=0.00025), metrics=['mae'])
 
-    # 4. TRAIN MODEL
+    # 4. TRAINING
 
     history = dqn.fit(env, nb_steps=1000000, visualize=False, verbose=2)
 
-    # 5. SAVE MODEL & HISTORY
+    # 5. SAVE MODEL & RESULTS
 
     dqn.save_weights('policy.h5', overwrite=True)
 
     with open('training_history.pkl', 'wb') as f:
         pickle.dump(history.history, f)
 
-    # Visualise performance
+    # Plot training results
     plt.figure(figsize=(14, 7))
     plt.subplot(2, 1, 1)
     plt.plot(history.history['episode_reward'])
@@ -249,20 +214,14 @@ if __name__ == "__main__":
     plt.savefig('training_performance.png')
     plt.show()
 
-    # 6. TEST
+    # 6. TESTING
 
     test_env = gym.make('ALE/Breakout-v5', render_mode='human')
-    test_env = AtariPreprocessing(test_env,
-                                  screen_size=84,
-                                  grayscale_obs=True,
-                                  frame_skip=4,
-                                  noop_max=30)
+    test_env = AtariPreprocessing(test_env, screen_size=84, grayscale_obs=True,
+                                  frame_skip=4, noop_max=30)
 
-    scores = dqn.test(test_env,
-                      nb_episodes=10,
-                      visualize=True)
-    print('Average score over 10 test episodes:',
-          np.mean(scores.history['episode_reward']))
+    scores = dqn.test(test_env, nb_episodes=10, visualize=True)
+    print(f'Average score over 10 test episodes: {np.mean(scores.history["episode_reward"])}')
 
-    # 7. Close env
+    # 7. Close environment
     env.close()
