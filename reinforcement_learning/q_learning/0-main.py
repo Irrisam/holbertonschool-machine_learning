@@ -15,8 +15,8 @@ Q = q_init(env)
 Q, _ = train(env, Q)
 
 env.reset()
-total_rewards, rendered_outputs = play(env, Q)
+full_encouragment, viewable_feedbacks = play(env, Q)
 
-print(f'Total Rewards: {total_rewards}')
-for output in rendered_outputs:
+print(f'Total Rewards: {full_encouragment}')
+for output in viewable_feedbacks:
     print(output)

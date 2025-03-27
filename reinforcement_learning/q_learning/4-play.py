@@ -17,13 +17,13 @@ def play(env, Q, max_steps=100):
     """
     # initial state
     state, _ = env.reset()
-    total_rewards = 0
-    rendered_outputs = []
+    full_encouragment = 0
+    viewable_feedbacks = []
 
     for step in range(max_steps):
         # render current state
         rendered_output = env.render()
-        rendered_outputs.append(rendered_output)
+        viewable_feedbacks.append(rendered_output)
 
         # pick the best action from Q-table
         action = np.argmax(Q[state, :])
@@ -32,14 +32,14 @@ def play(env, Q, max_steps=100):
         new_state, reward, done, info, truncated = env.step(action)
 
         # accumulate reward
-        total_rewards += reward
+        full_encouragment += reward
 
         # update state
         state = new_state
 
         if done:
             rendered_output = env.render()
-            rendered_outputs.append(rendered_output)
+            viewable_feedbacks.append(rendered_output)
             break
 
-    return total_rewards, rendered_outputs
+    return full_encouragment, viewable_feedbacks

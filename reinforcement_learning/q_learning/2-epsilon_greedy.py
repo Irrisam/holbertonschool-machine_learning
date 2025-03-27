@@ -7,7 +7,7 @@ import numpy as np
 
 def epsilon_greedy(Q, state, epsilon):
     """
-        uses epsilon-greedy to pick the next action
+        pick the next action
 
         :param Q: ndarray, Q-table
         :param state: current state

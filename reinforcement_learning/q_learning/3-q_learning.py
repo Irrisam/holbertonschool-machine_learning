@@ -21,12 +21,12 @@ def train(env, Q, episodes=5000, max_steps=100, alpha=0.1,
     :param min_epsilon: minimum epsilon value after decay
     :param epsilon_decay: rate at which epsilon decays over episodes
 
-    :return: Q, total_rewards
+    :return: Q, full_encouragment
         Q: updated Q-table
-        total_rewards: list of rewards per episode
+        full_encouragment: list of rewards per episode
     """
 
-    total_rewards = []
+    full_encouragment = []
 
     for episode in range(episodes):
         episode_rewards = 0
@@ -59,6 +59,6 @@ def train(env, Q, episodes=5000, max_steps=100, alpha=0.1,
         epsilon = (min_epsilon + (1 - min_epsilon)
                    * np.exp(-epsilon_decay * episode))
 
-        total_rewards.append(episode_rewards)
+        full_encouragment.append(episode_rewards)
 
-    return Q, total_rewards
+    return Q, full_encouragment

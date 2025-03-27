@@ -13,12 +13,9 @@ def q_init(env):
 
         :return: Q-table as a numpy.ndarray filled with zeros
     """
-    # possible observations
     views = env.observation_space.n
-    # possible actions
     moves = env.action_space.n
 
-    # create Q-table
     q_table = np.zeros((views, moves))
 
     return q_table
