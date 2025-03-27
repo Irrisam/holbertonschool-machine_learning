@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-    display a game played by the agent trained on atari's breakout
+     game used by trained model on atari's breakout
 """
 from __future__ import division
 
@@ -50,16 +50,15 @@ class CompatibilityWrapper(gym.Wrapper):
         return observation
 
 
-def create_atari_environment(env_name):
+def atari_env_builder(env_name):
     """
-        create and configure an atari env for reinforcement learning
+        create arari env
 
     :param env_name: name of the atari environment
 
     :return: configured gym environment
     """
     env = gym.make(env_name, render_mode='rgb_array')
-    # apply preprocessing: resize, grayscale, frame skip, no-ops
     env = AtariPreprocessing(env,
                              screen_size=84,
                              grayscale_obs=True,
@@ -69,13 +68,9 @@ def create_atari_environment(env_name):
     return env
 
 
-#####################################
-#            cnn model              #
-#####################################
-
 def build_model(window_length, shape, actions):
     """
-        build a cnn model for rl
+        cnn model for rl
 
     :param window_length: int, number of frames to stack
     :param shape: tuple, shape of the input image
@@ -94,18 +89,14 @@ def build_model(window_length, shape, actions):
     return model
 
 
-#####################################
-#              agent                #
-#####################################
-
 class AtariProcessor(Processor):
     """
-        custom processor to handle atari env observations and rewards
+        functionnement processing for console games
     """
 
     def process_observation(self, observation):
         """
-            convert observation into a numpy array
+            change feedback into np array
 
         :param observation: observation from env
 
@@ -114,13 +105,13 @@ class AtariProcessor(Processor):
         if isinstance(observation, tuple):
             observation = observation[0]
 
-        img = np.array(observation)
-        img = img.astype('uint8')
-        return img
+        pic = np.array(observation)
+        pic = pic.astype('uint8')
+        return pic
 
     def process_state_batch(self, batch):
         """
-            normalize a batch of states
+            normalize states
 
         :param batch: ndarray, batch of states
 
@@ -131,7 +122,7 @@ class AtariProcessor(Processor):
 
     def process_reward(self, reward):
         """
-            clip reward to [-1, 1]
+           give rewards clipped
 
         :param reward: float, reward from env
 
@@ -142,12 +133,12 @@ class AtariProcessor(Processor):
 
 class PygameCallback(Callback):
     """
-        callback to display the agent's game using pygame
+        show game by model
     """
 
     def __init__(self, env, delay=0.02):
         """
-            initialize the callback with env and rendering delay
+            init env and render delay
 
         :param env: gym env instance
         :param delay: time between frames in seconds
@@ -160,7 +151,7 @@ class PygameCallback(Callback):
 
     def on_action_end(self, action, logs={}):
         """
-            callback when an action ends, renders frame and updates display
+            updates display after each action
 
         :param action: action taken
         :param logs: training logs
@@ -189,11 +180,9 @@ class PygameCallback(Callback):
 
 
 if __name__ == "__main__":
-    # 1. create the environment
-    env = create_atari_environment('ALE/Breakout-v5')
+    env = atari_env_builder('ALE/Breakout-v5')
     nb_actions = env.action_space.n
 
-    # 2. build the model
     window_length = 4
     input_shape = (84, 84)
     model = build_model(window_length, input_shape, nb_actions

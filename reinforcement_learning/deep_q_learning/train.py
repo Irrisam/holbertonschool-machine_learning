@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-    Training an agent to play Atari's Breakout
+    training function for breakout game by atari
 """
 from __future__ import division
 import gymnasium as gym
@@ -16,39 +16,29 @@ from rl.policy import EpsGreedyQPolicy, LinearAnnealedPolicy
 from rl.util import *
 from rl.core import Processor
 
-#####################################
-#         Setup PARAMETER           #
-#####################################
-
-# Config settings for the whole setup
 seed = 42
-gamma = 0.99  # Discount factor for rewards
-epsilon = 1.0  # Epsilon for exploration
-epsilon_min = 0.1  # Min epsilon value
-epsilon_max = 1.0  # Max epsilon value
-epsilon_interval = (epsilon_max - epsilon_min)  # Rate of random action decay
-batch_size = 32  # Batch size from replay buffer
+gamma = 0.99
+epsilon = 1.0
+epsilon_min = 0.1
+epsilon_max = 1.0
+epsilon_interval = (epsilon_max - epsilon_min)
+batch_size = 32
 max_steps_per_episode = 10000
-max_episodes = 10  # Episodes to train, will continue until solved if < 1
-
-
-#####################################
-#            Setup ENV              #
-#####################################
+max_episodes = 10
 
 class CompatibilityWrapper(gym.Wrapper):
     """
-        Compatibility wrapper to ensure
-        older gym env versions work properly
+        Compatibility wrapper for
+        older gym env version
     """
 
     def step(self, action):
         """
-            Perform one step in the environment using the given action
+            Perform one step
 
         :param action: action taken in env
 
-        :return: tuple with observation, reward, done, and additional info
+        :return: tuple with observation, reward, done, additional info and truncated factor
         """
         observation, reward, terminated, truncated, info = self.env.step(action)
         done = terminated or truncated
@@ -56,7 +46,7 @@ class CompatibilityWrapper(gym.Wrapper):
 
     def reset(self, **kwargs):
         """
-            Reset the environment and return initial observation
+            Reset the environment and return
 
         :param kwargs: any extra arguments
 
@@ -66,10 +56,11 @@ class CompatibilityWrapper(gym.Wrapper):
         return observation
 
 
-def create_atari_environment(env_name):
+def atari_env_builder(env_name):
     """
-        Set up and configure Atari environment for RL
-
+    
+        env setup
+    
     :param env_name: Atari environment name
 
     :return: gym.Env: processed Atari environment
@@ -79,10 +70,6 @@ def create_atari_environment(env_name):
     env = CompatibilityWrapper(env)
     return env
 
-
-#####################################
-#            CNN model              #
-#####################################
 
 def build_model(window_length, shape, actions):
     """
@@ -105,14 +92,9 @@ def build_model(window_length, shape, actions):
     return model
 
 
-#####################################
-#              AGENT                #
-#####################################
-
 class AtariProcessor(Processor):
     """
         Custom processor for Atari environment
-        to handle observations and rewards before passing to DQN agent
     """
 
     def process_observation(self, observation):
@@ -126,12 +108,12 @@ class AtariProcessor(Processor):
         if isinstance(observation, tuple):
             observation = observation[0]
 
-        img = np.array(observation).astype('uint8')
-        return img
+        pic = np.array(observation).astype('uint8')
+        return pic
 
     def process_state_batch(self, batch):
         """
-            Normalize pixel values for batch of states
+            normalize batches
 
         :param batch: batch of states
 
@@ -141,7 +123,7 @@ class AtariProcessor(Processor):
 
     def process_reward(self, reward):
         """
-            Clip the reward to be between -1 and 1
+            reward to be between -1 and 1
 
         :param reward: incoming reward
 
@@ -151,12 +133,9 @@ class AtariProcessor(Processor):
 
 
 if __name__ == "__main__":
-    # 1. SETUP ENVIRONMENT
-
-    env = create_atari_environment('ALE/Breakout-v5')
+    env = atari_env_builder('ALE/Breakout-v5')
     observation = env.reset()
 
-    # Show the initial frame
     plt.imshow(observation, cmap='gray')
     plt.title("Initial Observation")
     plt.axis('off')
@@ -164,12 +143,8 @@ if __name__ == "__main__":
 
     nb_actions = env.action_space.n
 
-    # 2. BUILD MODEL
-
     window_length = 4
     model = build_model(window_length, observation.shape, nb_actions)
-
-    # 3. SET UP AGENT
 
     memory = SequentialMemory(limit=1000000, window_length=window_length)
     processor = AtariProcessor()
@@ -191,18 +166,15 @@ if __name__ == "__main__":
 
     dqn.compile(Adam(learning_rate=0.00025), metrics=['mae'])
 
-    # 4. TRAINING
 
     history = dqn.fit(env, nb_steps=1000000, visualize=False, verbose=2)
 
-    # 5. SAVE MODEL & RESULTS
 
     dqn.save_weights('policy.h5', overwrite=True)
 
     with open('training_history.pkl', 'wb') as f:
         pickle.dump(history.history, f)
 
-    # Plot training results
     plt.figure(figsize=(14, 7))
     plt.subplot(2, 1, 1)
     plt.plot(history.history['episode_reward'])
@@ -214,7 +186,6 @@ if __name__ == "__main__":
     plt.savefig('training_performance.png')
     plt.show()
 
-    # 6. TESTING
 
     test_env = gym.make('ALE/Breakout-v5', render_mode='human')
     test_env = AtariPreprocessing(test_env, screen_size=84, grayscale_obs=True,
@@ -223,5 +194,4 @@ if __name__ == "__main__":
     scores = dqn.test(test_env, nb_episodes=10, visualize=True)
     print(f'Average score over 10 test episodes: {np.mean(scores.history["episode_reward"])}')
 
-    # 7. Close environment
     env.close()
