@@ -42,6 +42,7 @@ def policy_gradient(state, weight):
     for vert in range(state.shape[1]):
         for hor in range(weight.shape[1]):
             grad[vert, hor] = state[0, vert] * ((1 - probs[0, hor])
-                                        if hor == action else -probs[0, hor])
+                                                if hor == action
+                                                else -probs[0, hor])
 
     return action, grad
