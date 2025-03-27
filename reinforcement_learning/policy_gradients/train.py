@@ -20,7 +20,6 @@ def train(env, nb_episodes, alpha=0.000045, gamma=0.98, show_result=False):
     """
     weight = np.random.rand(*env.observation_space.shape, env.action_space.n)
 
-    # Track scores over episodes
     scores = []
 
     for episode in range(1, nb_episodes + 1):
