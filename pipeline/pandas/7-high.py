@@ -4,9 +4,6 @@
 """
 
 
-import pandas as pd
-
-
 def high(df: pd.DataFrame) -> pd.DataFrame:
     """
     Sorts the DataFrame by the High price in descending order.
