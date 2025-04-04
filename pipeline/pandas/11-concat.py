@@ -6,7 +6,7 @@
 import pandas as pd
 
 
-def concat(df1,df2):
+def concat(df1, df2):
     """
     Indexes both dataframes on their Timestamp columns,
     selects relevant rows from df2,
@@ -23,5 +23,6 @@ def concat(df1,df2):
     df1 = index(df1)
     df2 = index(df2)
     df2_filtered = df2.loc[df2.index <= 1417411920]
-    
-    return pd.concat({'bitstamp': df2_filtered, 'coinbase': df1}, names=['Source'])
+
+    return pd.concat({'bitstamp': df2_filtered,
+                      'coinbase': df1}, names=['Source'])
