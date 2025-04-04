@@ -2,7 +2,6 @@
 """
     Converts a numpy array to a pandas DataFrame
 """
-
 import pandas as pd
 
 def from_numpy(array):
@@ -15,5 +14,11 @@ def from_numpy(array):
         :return: pandas.DataFrame
             The converted DataFrame.
     """
-
-    return pd.DataFrame(array)
+    df = pd.DataFrame(array)
+    num_col = array.shape[1]
+    letters = []
+    for i in range(num_col):
+        letters.append(chr(ord('A') + i))
+    df = pd.DataFrame(array, columns=letters)
+    
+    return df
