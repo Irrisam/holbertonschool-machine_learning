@@ -4,6 +4,7 @@
 """
 import pandas as pd
 
+
 def from_numpy(array):
     """
         Converts a numpy array to a pandas DataFrame.
@@ -20,5 +21,4 @@ def from_numpy(array):
     for i in range(num_col):
         letters.append(chr(ord('A') + i))
     df = pd.DataFrame(array, columns=letters)
-    
     return df
