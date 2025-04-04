@@ -5,6 +5,7 @@
 
 import pandas as pd
 
+
 def rename(df):
     """
         Renames the columns of a DataFrame.
