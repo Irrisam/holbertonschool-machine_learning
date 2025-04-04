@@ -12,8 +12,11 @@ def dict_df_builder():
         :return: pandas.DataFrame
             The converted DataFrame.
     """
-    dict_df = pd.DataFrame({'First': [0.0, 0.5, 1.0, 1.5], 'Second': ["one", "two", "three", "four"]}, index=["A", "B", "C", "D"])
+    dict_df = pd.DataFrame({'First': [0.0, 0.5, 1.0, 1.5],
+                            'Second': ["one", "two", "three", "four"]},
+                           index=["A", "B", "C", "D"])
 
     return dict_df
+
 
 df = dict_df_builder()
