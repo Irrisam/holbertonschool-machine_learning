@@ -4,7 +4,7 @@
 """
 
 
-def high(df: pd.DataFrame) -> pd.DataFrame:
+def high(df):
     """
     Sorts the DataFrame by the High price in descending order.
 
