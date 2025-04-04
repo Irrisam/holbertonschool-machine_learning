@@ -22,7 +22,6 @@ def concat(df1, df2):
     index = __import__('10-index').index
     df1 = index(df1)
     df2 = index(df2)
-    df2_filtered = df2.loc[df2.index <= 1417411920]
+    df2_filtered = df2.loc[df2.index <= 1417411920].copy()
 
-    return pd.concat({'bitstamp': df2_filtered,
-                      'coinbase': df1}, names=['Source'])
+    return pd.concat([df2_filtered, df1], keys=["bitstamp", "coinbase"])
