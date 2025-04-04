@@ -3,9 +3,6 @@
     Converts a numpy array to a pandas DataFrame
 """
 
-import pandas as pd
-import numpy as np
-
 
 def array(df):
     """
