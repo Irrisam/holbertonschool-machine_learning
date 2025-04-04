@@ -15,7 +15,7 @@ def flip_switch(df):
             The converted DataFrame.
     """
     if df.index.inferred_type == 'datetime':
-        df_sorted = df.sort_index()
+        df_sorted = df.sort_index(ascending=False)
     else:
-        df_sorted = df.sort_values(by=df.columns[0])
+        df_sorted = df.sort_values(by=df.columns[0], ascending=False)
     return df_sorted.T
