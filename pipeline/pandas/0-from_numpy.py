@@ -1,6 +1,9 @@
-import pandas as pd
-import numpy as np
+#!/usr/bin/env python3
+"""
+    Converts a numpy array to a pandas DataFrame
+"""
 
+import pandas as pd
 
 def from_numpy(array):
     """
