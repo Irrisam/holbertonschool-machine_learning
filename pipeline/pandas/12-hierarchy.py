@@ -34,5 +34,8 @@ def hierarchy(df1, df2):
                            & (df2.index <= 1417417980)]
 
     df_combined = pd.concat({'bitstamp': df2_filtered,
-                             'coinbase': df1_filtered}, names=['Source'])
+                             'coinbase': df1_filtered})
+    df_combined = df_combined.swaplevel(0, 1)
+
+    df_combined = df_combined.sort_index(level=1)
     return df_combined.sort_index()
