@@ -18,10 +18,15 @@ def sentientPlanets():
     url = "https://swapi.dev/api/species/"
     sentients = []
     while url:
-        r = requests.get(url, timeout=5)
+        r = requests.get(url, timeout=25)
         data = r.json()
         for species in data["results"]:
             if species['designation'] == 'sentient':
-                sentients.append(species["name"])
+                if species["homeworld"] is None:
+                    continue
+                world_url = species["homeworld"]
+                world_r = requests.get(world_url, timeout=25)
+                world_data = world_r.json()
+                sentients.append(str(world_data["name"]))
         url = data["next"]
     return sentients
