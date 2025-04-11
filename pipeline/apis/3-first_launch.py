@@ -6,6 +6,8 @@ import requests
 
 
 def get_json(url):
+    '''
+    Get JSON data from a URL'''
     try:
         r = requests.get(url)
         r.raise_for_status()
@@ -16,6 +18,7 @@ def get_json(url):
 
 
 def get_up_launch():
+    ''' Get the next launch from SpaceX API'''
     url = "https://api.spacexdata.com/v4/launches/upcoming"
     launches = get_json(url)
     if launches is None:
@@ -27,6 +30,7 @@ def get_up_launch():
 
 
 def get_name_rocket(rocket_id):
+    ''' Get the name of the rocket from SpaceX API'''
     url = "https://api.spacexdata.com/v4/rockets/{}".format(rocket_id)
     rocket_info = get_json(url)
     if rocket_info is None:
@@ -36,6 +40,7 @@ def get_name_rocket(rocket_id):
 
 
 def get_launchpad_info(launchpad_id):
+    ''' Get the name and location of the launchpad from SpaceX API'''
     url = "https://api.spacexdata.com/v4/launchpads/{}".format(launchpad_id)
     launchpad_info = get_json(url)
     if launchpad_info is None:
