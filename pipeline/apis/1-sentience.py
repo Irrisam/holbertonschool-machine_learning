@@ -3,7 +3,6 @@
 star wars swapi project on apis
 """
 import requests
-import json
 
 
 def sentientPlanets():
@@ -15,7 +14,7 @@ def sentientPlanets():
         A list of starship names that can carry the given number of passengers.
     """
 
-    url = "https://swapi.dev/api/species/"
+    url = "https://swapi-api.hbtn.io/api/species/"
     sentients = []
     while url:
         r = requests.get(url, timeout=25)
@@ -29,5 +28,4 @@ def sentientPlanets():
                 world_data = world_r.json()
                 sentients.append(str(world_data["name"]))
         url = data["next"]
-    sentients.append(['Rhodia'])
     return sentients
