@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-
+"""
+First launch
+"""
 from collections import Counter
 import requests
 
