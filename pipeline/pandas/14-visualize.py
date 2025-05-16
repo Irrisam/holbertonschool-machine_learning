@@ -14,22 +14,17 @@ df['Date'] = pd.to_datetime(df['Date'], unit='s')
 
 df = df.set_index('Date')
 
-
 df['Close'] = df['Close'].fillna(method='ffill')
 
-
-df['High'] = df['High'].fillna(df['Close'])
-df['Low'] = df['Low'].fillna(df['Close'])
-df['Open'] = df['Open'].fillna(df['Close'])
-
+for col in ['High', 'Low', 'Open']:
+    df[col] = df[col].fillna(df['Close'])
 
 df['Volume_(BTC)'] = df['Volume_(BTC)'].fillna(0)
 df['Volume_(Currency)'] = df['Volume_(Currency)'].fillna(0)
 
+df = df['2017':]
 
-df_filtered = df[df.index.year >= 2017]
-
-df_resampled = df_filtered.resample('D').agg({
+daily_df = df.resample('D').agg({
     'High': 'max',
     'Low': 'min',
     'Open': 'mean',
@@ -38,12 +33,31 @@ df_resampled = df_filtered.resample('D').agg({
     'Volume_(Currency)': 'sum'
 })
 
+fig, ax1 = plt.subplots(figsize=(15, 8))
 
-plt.figure(figsize=(10,6))
-df_resampled['Close'].plot(label='Close', color='blue')
-plt.title('Close Price from 2017 onwards')
-plt.xlabel('Date')
-plt.ylabel('Close Price (Currency)')
-plt.legend()
-plt.grid(True)
+ax1.plot(daily_df.index, daily_df['High'],
+         label='High', color='green', alpha=0.7)
+ax1.plot(daily_df.index, daily_df['Low'], label='Low', color='red', alpha=0.7)
+ax1.plot(daily_df.index, daily_df['Open'],
+         label='Open', color='blue', alpha=0.7)
+ax1.plot(daily_df.index, daily_df['Close'],
+         label='Close', color='orange', alpha=0.7)
+ax1.set_ylabel('Price (USD)', color='black')
+ax1.tick_params(axis='y', labelcolor='black')
+ax1.grid(True, alpha=0.3)
+
+ax2 = ax1.twinx()
+ax2.bar(daily_df.index, daily_df['Volume_(BTC)'],
+        label='Volume (BTC)', color='purple', alpha=0.3, width=1)
+ax2.set_ylabel('Volume (BTC)', color='purple')
+ax2.tick_params(axis='y', labelcolor='purple')
+
+plt.title('Bitcoin Price and Volume (2017-2019)', fontsize=14)
+ax1.set_xlabel('Date')
+
+lines1, labels1 = ax1.get_legend_handles_labels()
+lines2, labels2 = ax2.get_legend_handles_labels()
+ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper left')
+
+plt.tight_layout()
 plt.show()
