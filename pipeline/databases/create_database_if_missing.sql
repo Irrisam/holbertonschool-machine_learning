@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS db_0 (temp_col INT);
