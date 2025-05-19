@@ -5,4 +5,5 @@ FROM
     tv_show_genres tsg
     RIGHT JOIN tv_shows ts on ts.id = tsg.show_id
 WHERE
-    tsg.genre_id is NULL;
+    tsg.genre_id is NULL
+ORDER BY ts.title, tsg.genre_id ASC;
