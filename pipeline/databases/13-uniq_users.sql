@@ -2,7 +2,8 @@
 -- because Batch 3 is the best!
 CREATE TABLE IF NOT EXISTS users (
     id int NOT NULL AUTO_INCREMENT,
-    email UNIQUE varchar(256),
+    email varchar(256),
     name varchar(256),
+    UNIQUE (email),
     PRIMARY KEY (id)
 );
