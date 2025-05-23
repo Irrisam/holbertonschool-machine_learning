@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import tensorflow_datasets as tfds
 import transformers
+'''exercice about SIMPLY loading a dataset.... '''
 
 
 class Dataset:
@@ -8,10 +9,15 @@ class Dataset:
 
     def __init__(self):
         """Initialize the dataset with train/validation splits and tokenizers."""
-        # Load the ted_hrlr_translate/pt_to_en dataset
-        self.data_train, self.data_valid = tfds.load(
+        # Load train and validation splits separately
+        self.data_train = tfds.load(
             'ted_hrlr_translate/pt_to_en',
-            split=['train', 'validation'],
+            split='train',
+            as_supervised=True
+        )
+        self.data_valid = tfds.load(
+            'ted_hrlr_translate/pt_to_en',
+            split='validation',
             as_supervised=True
         )
 
@@ -46,12 +52,6 @@ class Dataset:
             # Decode tf.Tensor to string
             pt_texts.append(pt.numpy().decode('utf-8'))
             en_texts.append(en.numpy().decode('utf-8'))
-
-        # Train tokenizers with maximum vocabulary size of 2^13 (8192)
-        # Note: Pre-trained tokenizers from transformers library already have
-        # their vocabularies, but we can use them directly or fine-tune if needed
-        # For this implementation, we'll use the pre-trained tokenizers as-is
-        # since they're already optimized for their respective languages
 
         # Set max_length to handle sequences properly
         tokenizer_pt.model_max_length = 512
