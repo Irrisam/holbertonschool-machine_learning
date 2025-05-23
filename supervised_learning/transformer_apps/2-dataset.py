@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import tensorflow_datasets as tfds
 import transformers
-import numpy as np
 import tensorflow as tf
 """
 Is that any better
@@ -103,9 +102,9 @@ class Dataset:
         pt_tokens = [start_token_pt] + pt_tokens + [end_token_pt]
         en_tokens = [start_token_en] + en_tokens + [end_token_en]
 
-        # Convert to numpy arrays
-        pt_tokens = np.array(pt_tokens)
-        en_tokens = np.array(en_tokens)
+        # Convert to numpy arrays using tf.constant().numpy()
+        pt_tokens = tf.constant(pt_tokens).numpy()
+        en_tokens = tf.constant(en_tokens).numpy()
 
         return pt_tokens, en_tokens
 
