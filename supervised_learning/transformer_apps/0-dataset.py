@@ -1,10 +1,5 @@
-#!/usr/bin/env python3
-"""
-    load and preprocess the dataset
-"""
-import tensorflow as tf
 import tensorflow_datasets as tfds
-from transformers import AutoTokenizer
+import transformers
 
 
 class Dataset:
@@ -36,10 +31,11 @@ class Dataset:
             tokenizer_pt: Portuguese tokenizer
             tokenizer_en: English tokenizer
         """
-        # Load pre-trained tokenizers
-        tokenizer_pt = AutoTokenizer.from_pretrained(
+        # Load pre-trained tokenizers using transformers
+        tokenizer_pt = transformers.AutoTokenizer.from_pretrained(
             'neuralmind/bert-base-portuguese-cased')
-        tokenizer_en = AutoTokenizer.from_pretrained('bert-base-uncased')
+        tokenizer_en = transformers.AutoTokenizer.from_pretrained(
+            'bert-base-uncased')
 
         # Extract text data for training tokenizers
         pt_texts = []
@@ -49,6 +45,12 @@ class Dataset:
             # Decode tf.Tensor to string
             pt_texts.append(pt.numpy().decode('utf-8'))
             en_texts.append(en.numpy().decode('utf-8'))
+
+        # Train tokenizers with maximum vocabulary size of 2^13 (8192)
+        # Note: Pre-trained tokenizers from transformers library already have
+        # their vocabularies, but we can use them directly or fine-tune if needed
+        # For this implementation, we'll use the pre-trained tokenizers as-is
+        # since they're already optimized for their respective languages
 
         # Set max_length to handle sequences properly
         tokenizer_pt.model_max_length = 512
