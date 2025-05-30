@@ -25,13 +25,13 @@ def td_lambtha(env, V, policy, lambtha,
 
     for ep in range(episodes):
         # start new episode
-        state = env.reset()
+        state, _ = env.reset()
         eligibility = np.zeros_like(V)
 
         for step in range(max_steps):
             # determine action based on policy
             action = policy(state)
-            next_state, reward, done, _ = env.step(action)
+            next_state, reward, done, _, _ = env.step(action)
 
             # TD error
             delta = reward + (gamma * V[next_state]) - V[state]
