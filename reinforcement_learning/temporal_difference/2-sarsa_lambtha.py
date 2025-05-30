@@ -38,13 +38,13 @@ def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100,
 
     for ep in range(episodes):
         # start new episode
-        state = env.reset()
+        state, _ = env.reset()
         action = epsilon_greedy(state, Q, epsilon)
         eligibility = np.zeros_like(Q)
 
         for step in range(max_steps):
             # determine action based on policy
-            next_state, reward, done, _ = env.step(action)
+            next_state, reward, done, _, _ = env.step(action)
             next_action = epsilon_greedy(next_state, Q, epsilon)
 
             # TD error
