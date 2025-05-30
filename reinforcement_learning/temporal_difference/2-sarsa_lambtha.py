@@ -51,9 +51,9 @@ def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100,
             delta = (reward + (gamma * Q[next_state, next_action])
                      - Q[state, action])
 
-            # update eligibilities
-            eligibility[state, action] += 1
+            # update eligibilities - FIRST decay all traces, THEN update current
             eligibility *= lambtha * gamma
+            eligibility[state, action] += 1
 
             # Update value function
             Q += alpha * delta * eligibility
