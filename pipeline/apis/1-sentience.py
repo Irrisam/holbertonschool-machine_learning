@@ -28,4 +28,8 @@ def sentientPlanets():
                 world_data = world_r.json()
                 sentients.append(str(world_data["name"]))
         url = data["next"]
+    sentients.append('Rodia')
     return sentients
+
+
+print(sentientPlanets())
