@@ -7,4 +7,10 @@ import tensorflow as tf
 
 
 def crop_image(image, size):
-    return tf.image.resize_with_crop_or_pad(image, size[0], size[1])
+    return (tf.image.crop_and_resize(
+        image,
+        boxes=1,
+        box_indices=[0, 1],
+        crop_size=size
+    )
+    )
