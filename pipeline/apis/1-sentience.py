@@ -30,6 +30,3 @@ def sentientPlanets():
         url = data["next"]
     sentients.append('Rodia')
     return sentients
-
-
-print(sentientPlanets())
