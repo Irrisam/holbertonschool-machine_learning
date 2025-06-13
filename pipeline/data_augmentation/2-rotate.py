@@ -8,4 +8,4 @@ import tensorflow as tf
 
 def rotate_image(image):
     '''crops an image'''
-    return (tf.image.rot90(image, k=3, name=None))
+    return (tf.image.rot90(image, k=1, name=None))
